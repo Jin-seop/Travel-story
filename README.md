@@ -1,6 +1,8 @@
 <h1 align="center" > Travel-story </h1>
 
-<center><img src="https://user-images.githubusercontent.com/58946982/95218769-99197680-082f-11eb-860f-9dea84cdd34f.png" ></center>
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/58946982/95218769-99197680-082f-11eb-860f-9dea84cdd34f.png" alt="text" width="250" />
+</p>
 
 <h2 align="center"> 사진을 공유하고 다 같이 즐겨보세요~! </h2>
 <h2 align="center"> 실시간 채팅으로 더욱 재밌게!!</h2>
