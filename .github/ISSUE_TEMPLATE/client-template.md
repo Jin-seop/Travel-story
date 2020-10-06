@@ -1,7 +1,7 @@
 ---
 name: Client Template
 about: "[Client]"
-title: ''
+title: "[Client]"
 labels: ''
 assignees: ''
 

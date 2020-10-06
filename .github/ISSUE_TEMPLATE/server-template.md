@@ -1,7 +1,7 @@
 ---
 name: Server Template
 about: "[Server]"
-title: ''
+title: "[Server]"
 labels: ''
 assignees: ''
 

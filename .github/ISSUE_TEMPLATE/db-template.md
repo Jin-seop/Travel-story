@@ -1,7 +1,7 @@
 ---
 name: DB Template
 about: "[DB]"
-title: ''
+title: "[DB]"
 labels: ''
 assignees: ''
 
