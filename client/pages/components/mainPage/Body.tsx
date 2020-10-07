@@ -1,5 +1,8 @@
 import style from "../../styles/Main.module.scss";
+import { useRouter } from "next/router";
+
 const Body = () => {
+  const router = useRouter();
   return (
     <div>
       <div className={style.bodyContainer}>
@@ -11,7 +14,11 @@ const Body = () => {
       </div>
       <div className={style.bodyContentContainer}>
         <ul>
-          <li>
+          <li
+            onClick={() => {
+              router.push("/PostDetailPage");
+            }}
+          >
             <div className={style.contentContainer}>
               <img src="#" alt="#" />
               <div className={style.writeContainer}>
