@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
+import { Header, Body } from "./components/PostPage";
 
 const PostPage = () => {
   const router = useRouter();
@@ -8,7 +9,8 @@ const PostPage = () => {
       <Head>
         <title>Travel Story</title>
       </Head>
-      <div>Login</div>
+      <Header />
+      <Body />
     </>
   );
 };

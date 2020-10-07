@@ -1,4 +1,4 @@
-import styles from "../../styles/PostDetailPage.module.scss";
+import styles from "../../styles/PostPage.module.scss";
 import { useRouter } from "next/router";
 
 const Header = () => {

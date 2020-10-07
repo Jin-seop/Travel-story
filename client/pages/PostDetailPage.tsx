@@ -1,18 +1,18 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { Header, Body } from "./components/PostPage";
+import { Header, DetailBody } from "./components/PostPage";
 
-const PostPage = () => {
+const PostDetailPage = () => {
   const router = useRouter();
   return (
-    <>
+    <div>
       <Head>
         <title>Travel Story</title>
       </Head>
       <Header />
-      <Body />
-    </>
+      <DetailBody />
+    </div>
   );
 };
 
-export default PostPage;
+export default PostDetailPage;
