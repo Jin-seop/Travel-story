@@ -1,18 +1,17 @@
-import Header from "~/components/header";
 import classes from "./style.module.scss";
+import { useRouter } from "next/router";
 import Head from "next/head";
 
-const HomePage = () => {
+const Home = () => {
+  const router = useRouter();
   return (
-    <div className={classes.HomePage}>
+    <div className={classes.Home}>
       <Head>
         <title>Travel Story</title>
-        <link rel="icon" type="image/x-icon" href="../static/favicon.ico" />
       </Head>
-      <Header> Next App </Header>
-      Welcome!
+      mainPage
     </div>
   );
 };
 
-export default HomePage;
+export default Home;
