@@ -1,12 +1,26 @@
 import style from "../../styles/PostDetailPage.module.scss";
+import { useRouter } from "next/router";
 
 const DetailBody = () => {
+  const router = useRouter();
   return (
     <div className={style.bodyContainer}>
       <div className={style.textContainer}>
         <form>
-          <button>수정하기</button>
-          <button>삭제하기</button>
+          <a
+            onClick={() => {
+              router.push("/PostPage");
+            }}
+          >
+            수정하기
+          </a>
+          <a
+            onClick={() => {
+              router.push("/");
+            }}
+          >
+            삭제하기
+          </a>
         </form>
         <div>
           <p>제목</p>

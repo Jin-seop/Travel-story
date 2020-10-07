@@ -24,7 +24,7 @@ const Header = () => {
           </li>
           <li
             onClick={() => {
-              router.push("/SignUpPage");
+              router.push("/");
             }}
           >
             로그아웃

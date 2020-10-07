@@ -16,10 +16,12 @@
     width: 20%;
   }
 
-  button {
+  a {
     margin: 0.5rem 1rem;
+    border: 1px solid black;
     background-color: white;
     border-radius: 5px;
+    padding: 0.3rem 0.3rem;
     &:hover {
       cursor: pointer;
       background-color: black;
