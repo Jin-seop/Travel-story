@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { Header } from "./components/LoginPage";
+import { Header, SignUpBody } from "./components/LoginPage";
 
 const SignUpPage = () => {
   const router = useRouter();
@@ -10,6 +10,7 @@ const SignUpPage = () => {
         <title>Travel Story</title>
       </Head>
       <Header />
+      <SignUpBody />
       <div>SignUpPage</div>
     </>
   );
