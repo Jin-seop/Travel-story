@@ -1,8 +1,4 @@
-.Home {
-  text-align: center;
-  color: red;
-}
-
+// 메인페이지 헤더
 .Header {
   display: flex;
   background-color: #0b2239;
@@ -24,7 +20,12 @@
     border-radius: 5px;
     margin-left: 1.5rem;
     padding: 1em 1em;
+    text-align: center;
     cursor: pointer;
+    &:hover {
+      background-color: white;
+      color: black;
+    }
   }
 }
 
@@ -32,7 +33,7 @@
   display: flex;
   margin-left: 75%;
 }
-
+// 메인페이지 검색
 .serchContainer {
   background-color: #0b2239;
   width: 100%;
@@ -58,7 +59,7 @@
     border-radius: 5px;
   }
 }
-
+//메인페이지 바디
 .bodyContainer {
   display: flex;
   width: 100%;
