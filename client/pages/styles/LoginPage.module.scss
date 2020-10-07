@@ -1,0 +1,63 @@
+//로그인 헤더
+.Header {
+  width: 100%;
+  text-align: center;
+  img {
+    width: 5rem;
+    height: 5rem;
+    margin: 0.5rem 1rem;
+  }
+}
+//로그인 바디
+.LoginBodyContainer {
+  background-color: #0b2239;
+  width: 99vw;
+  height: 87vh;
+  position: relative;
+}
+
+.LoginContainer {
+  background-color: white;
+  width: 30%;
+  height: 60%;
+  position: absolute;
+  top: 10%;
+  left: 35%;
+  text-align: center;
+  padding-top: 2rem;
+  p {
+    font-size: 2rem;
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+    margin-top: 2rem;
+  }
+  input {
+    width: 55%;
+    height: 2rem;
+    margin: 1.5rem auto 0 auto;
+    padding-left: 1rem;
+  }
+
+  button {
+    width: 60%;
+    height: 3rem;
+    margin: 2rem auto;
+    background-color: #0b2239;
+    color: white;
+    font-size: 1rem;
+    &:hover {
+      cursor: pointer;
+      opacity: 0.5;
+    }
+  }
+  img {
+    border-radius: 5px;
+    box-shadow: 2px 2px;
+    &:hover {
+      cursor: pointer;
+      opacity: 0.5;
+    }
+  }
+}

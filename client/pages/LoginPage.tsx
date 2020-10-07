@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
-
+import { Header, LoginBody } from "./components/LoginPage";
 const LoginPage = () => {
   const router = useRouter();
   return (
@@ -8,7 +8,8 @@ const LoginPage = () => {
       <Head>
         <title>Travel Story Login</title>
       </Head>
-      <div>Login</div>
+      <Header />
+      <LoginBody />
     </>
   );
 };
