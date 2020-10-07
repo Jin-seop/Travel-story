@@ -20,7 +20,10 @@ const Body = () => {
             }}
           >
             <div className={style.contentContainer}>
-              <img src="#" alt="#" />
+              <img
+                src="https://miro.medium.com/max/700/0*iQn2GLCJi5CSDLKq"
+                alt="#"
+              />
               <div className={style.writeContainer}>
                 <p>-제목- alskmdasdasdsad</p>
                 <p>-작성자- asdasdasdasd</p>
@@ -30,7 +33,10 @@ const Body = () => {
           </li>
           <li>
             <div className={style.contentContainer}>
-              <img src="#" alt="#" />
+              <img
+                src="https://miro.medium.com/fit/c/96/96/1*Gw27IE_koE49KYrVr0k0AA.jpeg"
+                alt="#"
+              />
               <div className={style.writeContainer}>
                 <p>-제목- alskmdasdasdsad</p>
                 <p>-작성자- asdasdasdasd</p>
