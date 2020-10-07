@@ -1,6 +1,7 @@
 import * as express from 'express';
 import * as cors from 'cors';
 import * as favicon from 'express-favicon';
+import 'reflect-metadata';
 
 class App {
     public app: express.Application;
