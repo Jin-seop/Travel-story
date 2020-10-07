@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import Head from "next/head";
-import Header from "./components/Header";
-import style from "./styles/style.module.scss";
+import { Header, Body } from "./components/mainPage/";
+import style from "./styles/Main.module.scss";
 
 const Home = () => {
   const router = useRouter();
@@ -19,6 +19,7 @@ const Home = () => {
           <input />
         </form>
       </div>
+      <Body />
     </div>
   );
 };
