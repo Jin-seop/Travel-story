@@ -1,17 +1,16 @@
 import { useRouter } from "next/router";
-import style from "../../styles/LoginPage.module.scss";
+import style from "../../pages/styles/LoginPage.module.scss";
 
-const SignUpBody = () => {
+const PasswordBody = () => {
   const router = useRouter();
   return (
     <div className={style.LoginBodyContainer}>
       <div className={style.LoginContainer}>
-        <p>회원가입</p>
+        <p>비밀번호 찾기</p>
+        <h4>이메일을 입력해주시면 초기화된 비밀번호가 발송됩니다.</h4>
         <form>
-          <input type="name" placeholder="Name" />
-          <input type="email" placeholder="Email" />
-          <input type="password" placeholder="Password" />
-          <button>회원가입</button>
+          <input placeholder="Email" type="email" />
+          <button>비밀번호 초기화</button>
         </form>
         <div>
           <a
@@ -19,14 +18,14 @@ const SignUpBody = () => {
               router.push("/LoginPage");
             }}
           >
-            회원이 이신가요?
+            이미 회원이 이신가요?
           </a>
           <a
             onClick={() => {
-              router.push("/PasswordPage");
+              router.push("/SignUpPage");
             }}
           >
-            비밀번호 찾기
+            회원이 아니신가요?
           </a>
         </div>
       </div>
@@ -34,4 +33,4 @@ const SignUpBody = () => {
   );
 };
 
-export default SignUpBody;
+export default PasswordBody;

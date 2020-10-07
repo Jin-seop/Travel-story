@@ -1,4 +1,4 @@
-import style from "../../styles/LoginPage.module.scss";
+import style from "../../pages/styles/LoginPage.module.scss";
 import { useRouter } from "next/router";
 
 const Header = () => {

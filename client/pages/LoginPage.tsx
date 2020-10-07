@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { Header, LoginBody } from "./components/LoginPage";
+import { Header, LoginBody } from "../components/LoginPage";
 const LoginPage = () => {
   const router = useRouter();
   return (

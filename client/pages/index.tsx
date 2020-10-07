@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import Head from "next/head";
-import { Header, Body } from "./components/MainPage";
+import { Header, Body } from "../components/MainPage";
 import style from "./styles/Main.module.scss";
 
 const Home = () => {

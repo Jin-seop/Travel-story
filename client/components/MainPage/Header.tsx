@@ -1,4 +1,4 @@
-import styles from "../../styles/PostPage.module.scss";
+import styles from "../../pages/styles/Main.module.scss";
 import { useRouter } from "next/router";
 
 const Header = () => {
@@ -13,21 +13,14 @@ const Header = () => {
               router.push("/LoginPage");
             }}
           >
-            내 글보기
+            로그인
           </li>
           <li
             onClick={() => {
               router.push("/SignUpPage");
             }}
           >
-            마이페이지
-          </li>
-          <li
-            onClick={() => {
-              router.push("/");
-            }}
-          >
-            로그아웃
+            회원가입
           </li>
         </ul>
       </div>

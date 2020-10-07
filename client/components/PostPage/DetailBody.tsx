@@ -1,4 +1,4 @@
-import style from "../../styles/PostDetailPage.module.scss";
+import style from "../../pages/styles/PostDetailPage.module.scss";
 import { useRouter } from "next/router";
 
 const DetailBody = () => {

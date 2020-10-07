@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import style from "../../styles/LoginPage.module.scss";
+import style from "../../pages/styles/LoginPage.module.scss";
 
 const LoginBody = () => {
   const router = useRouter();

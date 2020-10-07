@@ -1,4 +1,4 @@
-import style from "../../styles/Main.module.scss";
+import style from "../../pages/styles/Main.module.scss";
 import { useRouter } from "next/router";
 
 const Body = () => {
@@ -31,7 +31,11 @@ const Body = () => {
               <p>채팅인원: %%</p>
             </div>
           </li>
-          <li>
+          <li
+            onClick={() => {
+              router.push("/PostDetailPage");
+            }}
+          >
             <div className={style.contentContainer}>
               <img
                 src="https://miro.medium.com/fit/c/96/96/1*Gw27IE_koE49KYrVr0k0AA.jpeg"

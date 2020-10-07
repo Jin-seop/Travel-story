@@ -1,4 +1,4 @@
-import style from "../../styles/PostPage.module.scss";
+import style from "../../pages/styles/PostPage.module.scss";
 
 const Body = () => {
   return (

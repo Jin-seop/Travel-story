@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { Header, Body } from "./components/PostPage";
+import { Header, Body } from "../components/PostPage";
 
 const PostPage = () => {
   const router = useRouter();
