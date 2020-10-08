@@ -2,6 +2,7 @@ import {
     MigrationInterface,
     QueryRunner,
     Table,
+    TableColumn,
     TableForeignKey,
 } from 'typeorm';
 
@@ -29,6 +30,15 @@ export class Content1602125879608 implements MigrationInterface {
             }),
             true
         );
+
+        await queryRunner.addColumn(
+            'content',
+            new TableColumn({
+                name: 'userId',
+                type: 'int',
+            })
+        );
+
         await queryRunner.createForeignKey(
             'content',
             new TableForeignKey({

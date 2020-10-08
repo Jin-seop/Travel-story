@@ -2,6 +2,7 @@ import {
     MigrationInterface,
     QueryRunner,
     Table,
+    TableColumn,
     TableForeignKey,
 } from 'typeorm';
 
@@ -24,10 +25,18 @@ export class Tag1602125886920 implements MigrationInterface {
             }),
             true
         );
+        await queryRunner.addColumn(
+            'tag',
+            new TableColumn({
+                name: 'contentTagId',
+                type: 'int',
+            })
+        );
+
         await queryRunner.createForeignKey(
             'tag',
             new TableForeignKey({
-                columnNames: ['contentId'],
+                columnNames: ['contentTagId'],
                 referencedColumnNames: ['id'],
                 referencedTableName: 'content',
                 onDelete: 'CASCADE',

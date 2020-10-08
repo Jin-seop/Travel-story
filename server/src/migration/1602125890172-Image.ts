@@ -2,6 +2,7 @@ import {
     MigrationInterface,
     QueryRunner,
     Table,
+    TableColumn,
     TableForeignKey,
 } from 'typeorm';
 
@@ -24,10 +25,18 @@ export class Image1602125890172 implements MigrationInterface {
             }),
             true
         );
+        await queryRunner.addColumn(
+            'image',
+            new TableColumn({
+                name: 'contentImgId',
+                type: 'int',
+            })
+        );
+
         await queryRunner.createForeignKey(
             'image',
             new TableForeignKey({
-                columnNames: ['contentId'],
+                columnNames: ['contentImgId'],
                 referencedColumnNames: ['id'],
                 referencedTableName: 'content',
                 onDelete: 'CASCADE',
