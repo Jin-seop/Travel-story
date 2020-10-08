@@ -3,9 +3,12 @@ import {
     PrimaryGeneratedColumn,
     Column,
     ManyToOne,
+    OneToMany,
     Timestamp,
 } from 'typeorm';
 import { User } from './User';
+import { Image } from './Image';
+import { Tag } from './Tag';
 
 @Entity()
 export class Content {
@@ -14,9 +17,6 @@ export class Content {
 
     @Column()
     title: string;
-
-    @Column()
-    tag: string;
 
     @Column({
         type: 'timestamp',
@@ -27,4 +27,10 @@ export class Content {
 
     @ManyToOne(() => User, (user) => user.contents)
     user: User;
+
+    @OneToMany(() => Image, (image) => image.content)
+    images: Image[];
+
+    @OneToMany(() => Tag, (tag) => tag.content)
+    tags: Tag[];
 }
