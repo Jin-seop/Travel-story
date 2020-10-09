@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import * as cors from 'cors';
-import { createConnection, getRepository, getConnection } from 'typeorm';
+import { createConnection, getRepository, getConnection, createQueryBuilder } from 'typeorm';
 import { User, Content, Image, Tag } from './entity';
 
 createConnection()
@@ -43,10 +43,13 @@ createConnection()
                 this.app.get(
                     '/NewPost',
                     async (req: express.Request, res: express.Response) => {
-                        const users = await getRepository(
-                            Content.Content
-                        ).find();
-                        res.json(users);
+                        const user = await getRepository(User.User)
+                        .createQueryBuilder('user')
+                        .leftJoinAndSelect('user.contents','content')
+                        .leftJoinAndSelect('content.images','image')
+                        .leftJoinAndSelect('content.tags','tag')
+                        .getMany()
+                        return res.status(200).send(user)
                     }
                 );
 
@@ -122,7 +125,7 @@ createConnection()
                             const result = await getRepository(User.User)
                                 .save(addUser)
                                 .catch((err) => console.error(err));
-                            return res.status(201).redirect('/');
+                            return res.status(201);
                         }
                     }
                 );
