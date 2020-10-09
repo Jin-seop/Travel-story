@@ -43,7 +43,7 @@ Could not find a cake matching this query.
 {% endapi-method-response-example-description %}
 
 ```
-{"message": 잘못된 요청입니다."}
+{"message": 이미 존재하는 유저입니다."}
 ```
 {% endapi-method-response-example %}
 {% endapi-method-response %}
