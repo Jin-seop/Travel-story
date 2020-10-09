@@ -57,9 +57,13 @@ createConnection()
                 this.app.post(
                     '/serch/title',
                     async (req: express.Request, res: express.Response) => {
-                        const content = await getRepository(
-                            Content.Content
-                        ).find(req.body.title);
+                        const content = await getRepository(User.User)
+                        .createQueryBuilder('user')
+                        .leftJoinAndSelect('user.contents','content')
+                        .where('content.title like :title',{title:`%${req.body.title}%`})
+                        .leftJoinAndSelect('content.images','image')
+                        .leftJoinAndSelect('content.tags','tag')
+                        .getMany()
                         return res.status(200).send(content);
                     }
                 );
