@@ -3,8 +3,7 @@ import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import * as cors from 'cors';
 import { createConnection } from 'typeorm';
-import { User } from './entity/User';
-import { Content } from './entity/Content';
+import { User, Content, Image, Tag } from './entity';
 
 createConnection()
     .then(async (connection) => {
@@ -47,7 +46,9 @@ createConnection()
                         res: express.Response,
                         next: express.NextFunction
                     ) => {
-                        const userRepository = connection.getRepository(User);
+                        const userRepository = connection.getRepository(
+                            User.User
+                        );
                         const users = await userRepository.find();
                         res.json(users);
                     }
