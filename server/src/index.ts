@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import * as cors from 'cors';
-import { createConnection } from 'typeorm';
+import { createConnection, getRepository } from 'typeorm';
 import { User, Content, Image, Tag } from './entity';
 
 createConnection()
@@ -39,18 +39,58 @@ createConnection()
                 //배포시 경로 바꿔서 파비콘 적용하기(정적 파일제공 참고)
                 // this.app.use(favicon(__dirname + '../images/favicon.ico'));
 
+                //최신 글 받기
                 this.app.get(
-                    '/',
-                    async (
-                        req: express.Request,
-                        res: express.Response,
-                        next: express.NextFunction
-                    ) => {
-                        const userRepository = connection.getRepository(
-                            User.User
-                        );
-                        const users = await userRepository.find();
+                    '/NewPost',
+                    async (req: express.Request, res: express.Response) => {
+                        const users = await getRepository(
+                            Content.Content
+                        ).find();
                         res.json(users);
+                    }
+                );
+
+                //제목 검색
+                this.app.post(
+                    '/serch/title',
+                    async (req: express.Request, res: express.Response) => {
+                        const content = await getRepository(
+                            Content.Content
+                        ).find(req.body.title);
+                        res.status(200).send(content);
+                    }
+                );
+                //게시글 추가 에러 발생
+                this.app.post(
+                    '/addPost',
+                    async (req: express.Request, res: express.Response) => {
+                        const content = await getRepository(
+                            Content.Content
+                        ).create(req.body);
+                        const result = await getRepository(Content.Content)
+                            .save(content)
+                            .catch((err) => console.error(err));
+                        return res.send(result);
+                    }
+                );
+                // 유저 추가
+                this.app.post(
+                    '/signup',
+                    async (req: express.Request, res: express.Response) => {
+                        const user = await getRepository(User.User).findOne({
+                            email: req.body.email,
+                        });
+                        if (user) {
+                            return res.send('이미 존재하는 유저입니다.');
+                        } else {
+                            const addUser = await getRepository(
+                                User.User
+                            ).create(req.body);
+                            const result = await getRepository(User.User)
+                                .save(addUser)
+                                .catch((err) => console.error(err));
+                            return res.status(201).redirect('/');
+                        }
                     }
                 );
             }
