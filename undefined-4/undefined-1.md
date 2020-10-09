@@ -1,8 +1,8 @@
-# 최신 글 받기
+# 회원가입
 
-{% api-method method="get" host="https://api.cakes.com" path="/NewPost" %}
+{% api-method method="post" host="https://api.cakes.com" path="/signup" %}
 {% api-method-summary %}
- New Post
+Sign up
 {% endapi-method-summary %}
 
 {% api-method-description %}
@@ -11,15 +11,29 @@
 
 {% api-method-spec %}
 {% api-method-request %}
+{% api-method-body-parameters %}
+{% api-method-parameter name="username" type="string" required=false %}
+
+{% endapi-method-parameter %}
+
+{% api-method-parameter name="password" type="string" required=false %}
+
+{% endapi-method-parameter %}
+
+{% api-method-parameter name="email" type="string" required=false %}
+
+{% endapi-method-parameter %}
+{% endapi-method-body-parameters %}
+{% endapi-method-request %}
 
 {% api-method-response %}
-{% api-method-response-example httpCode=200 %}
+{% api-method-response-example httpCode=201 %}
 {% api-method-response-example-description %}
 Cake successfully retrieved.
 {% endapi-method-response-example-description %}
 
 ```
-{userId:'$$',title:'$$', Image :'$$', tag:'$$', chatMember:'$$'}
+리다이렉드 : mainPage
 ```
 {% endapi-method-response-example %}
 

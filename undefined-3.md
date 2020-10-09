@@ -1,8 +1,8 @@
-# 최신 글 받기
+# 제목 검색
 
-{% api-method method="get" host="https://api.cakes.com" path="/NewPost" %}
+{% api-method method="post" host="https://api.cakes.com" path="/serch/title" %}
 {% api-method-summary %}
- New Post
+Serch title
 {% endapi-method-summary %}
 
 {% api-method-description %}
@@ -11,6 +11,12 @@
 
 {% api-method-spec %}
 {% api-method-request %}
+{% api-method-body-parameters %}
+{% api-method-parameter name="title" type="string" required=false %}
+
+{% endapi-method-parameter %}
+{% endapi-method-body-parameters %}
+{% endapi-method-request %}
 
 {% api-method-response %}
 {% api-method-response-example httpCode=200 %}

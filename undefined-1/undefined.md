@@ -1,8 +1,8 @@
-# 최신 글 받기
+# 게시글 상세정보
 
-{% api-method method="get" host="https://api.cakes.com" path="/NewPost" %}
+{% api-method method="post" host="https://api.cakes.com" path="/post" %}
 {% api-method-summary %}
- New Post
+Detail Post
 {% endapi-method-summary %}
 
 {% api-method-description %}
@@ -11,6 +11,26 @@
 
 {% api-method-spec %}
 {% api-method-request %}
+{% api-method-headers %}
+{% api-method-parameter name="cookie" type="string" required=false %}
+
+{% endapi-method-parameter %}
+{% endapi-method-headers %}
+
+{% api-method-body-parameters %}
+{% api-method-parameter name="userId" type="string" required=false %}
+
+{% endapi-method-parameter %}
+
+{% api-method-parameter name="title" type="number" required=false %}
+
+{% endapi-method-parameter %}
+
+{% api-method-parameter name="tag" type="string" required=false %}
+
+{% endapi-method-parameter %}
+{% endapi-method-body-parameters %}
+{% endapi-method-request %}
 
 {% api-method-response %}
 {% api-method-response-example httpCode=200 %}
@@ -19,7 +39,7 @@ Cake successfully retrieved.
 {% endapi-method-response-example-description %}
 
 ```
-{userId:'$$',title:'$$', Image :'$$', tag:'$$', chatMember:'$$'}
+{userId:'$$', title:'$$' ,tag:'$$',image:'$$',chat:'$$'}
 ```
 {% endapi-method-response-example %}
 

@@ -1,8 +1,8 @@
-# 최신 글 받기
+# 비밀번호 찾기
 
-{% api-method method="get" host="https://api.cakes.com" path="/NewPost" %}
+{% api-method method="post" host="https://api.cakes.com" path="/forgetPassword" %}
 {% api-method-summary %}
- New Post
+Forget password
 {% endapi-method-summary %}
 
 {% api-method-description %}
@@ -11,6 +11,12 @@
 
 {% api-method-spec %}
 {% api-method-request %}
+{% api-method-body-parameters %}
+{% api-method-parameter name="email" type="string" required=false %}
+
+{% endapi-method-parameter %}
+{% endapi-method-body-parameters %}
+{% endapi-method-request %}
 
 {% api-method-response %}
 {% api-method-response-example httpCode=200 %}
@@ -19,7 +25,7 @@ Cake successfully retrieved.
 {% endapi-method-response-example-description %}
 
 ```
-{userId:'$$',title:'$$', Image :'$$', tag:'$$', chatMember:'$$'}
+
 ```
 {% endapi-method-response-example %}
 
@@ -36,5 +42,5 @@ Could not find a cake matching this query.
 {% endapi-method-spec %}
 {% endapi-method %}
 
-
+> nodemail를 통해 임의의 비밀번호 전
 

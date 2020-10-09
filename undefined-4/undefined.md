@@ -1,8 +1,8 @@
-# 최신 글 받기
+# 로그인
 
-{% api-method method="get" host="https://api.cakes.com" path="/NewPost" %}
+{% api-method method="post" host="https://api.cakes.com" path="/login" %}
 {% api-method-summary %}
- New Post
+Login 
 {% endapi-method-summary %}
 
 {% api-method-description %}
@@ -11,6 +11,16 @@
 
 {% api-method-spec %}
 {% api-method-request %}
+{% api-method-body-parameters %}
+{% api-method-parameter name="userId" type="string" required=false %}
+
+{% endapi-method-parameter %}
+
+{% api-method-parameter name="password" type="string" required=false %}
+
+{% endapi-method-parameter %}
+{% endapi-method-body-parameters %}
+{% endapi-method-request %}
 
 {% api-method-response %}
 {% api-method-response-example httpCode=200 %}
@@ -19,7 +29,7 @@ Cake successfully retrieved.
 {% endapi-method-response-example-description %}
 
 ```
-{userId:'$$',title:'$$', Image :'$$', tag:'$$', chatMember:'$$'}
+리다이렉트 : main Page
 ```
 {% endapi-method-response-example %}
 

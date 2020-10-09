@@ -1,8 +1,8 @@
-# 최신 글 받기
+# 채팅순서로 글 받기
 
-{% api-method method="get" host="https://api.cakes.com" path="/NewPost" %}
+{% api-method method="get" host="https://api.cakes.com" path="/largeChatMember" %}
 {% api-method-summary %}
- New Post
+largeChatMember
 {% endapi-method-summary %}
 
 {% api-method-description %}
