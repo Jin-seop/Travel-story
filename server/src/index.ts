@@ -77,6 +77,20 @@ createConnection()
                         return res.status(201).send('게시글 추가');
                     }
                 );
+                    //게시글 수정
+                this.app.put('/post', async (req: express.Request, res: express.Response) => {
+                    const user = await getRepository(User.User).find({
+                        username: req.body.username
+                    });
+
+                    const updateContent = await getConnection()
+                    .createQueryBuilder()
+                    .update(Content.Content)
+                    .set({ title:req.body.title })
+                    .where(`content.created_at = '${req.body.created_at}'`,{ user })
+                    .execute().catch(err => console.error(err));
+                    return res.status(201)
+                })
 
                 //게시글 삭제 (유저이름과 제목,작성시간 필요!)
                     this.app.delete('/post',async (req: express.Request, res: express.Response) => {
