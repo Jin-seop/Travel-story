@@ -67,19 +67,35 @@ createConnection()
                         return res.status(200).send(content);
                     }
                 );
-                //게시글 추가(태그,이미지 추가 할 것!)
+                //게시글 추가
                 this.app.post(
                     '/addPost',
                     async (req: express.Request, res: express.Response) => {
                         const user = await getRepository(User.User).findOne({
                             username: req.body.username,
                         });
+
+                        //글 추가
                         const content = await getConnection()
-                            .createQueryBuilder()
-                            .insert()
-                            .into(Content.Content)
-                            .values([{ title: req.body.title, user }])
-                            .execute();
+                        .createQueryBuilder()
+                        .insert()
+                        .into(Content.Content)
+                        .values([{ title: req.body.title, user }])
+                        .execute()
+                        .then(result => {
+                            //이미지 추가
+                            const imageRepository = getRepository(Image.Image)
+                            const image = imageRepository.create()
+                            image.imgName = req.body.imgName
+                            image.content = result.identifiers[0].id
+                            imageRepository.save(image)
+                            //태그 추가
+                            const tagRepository = getRepository(Tag.Tag)
+                            const tag = tagRepository.create()
+                            tag.tagName = req.body.imgName
+                            tag.content = result.identifiers[0].id
+                            tagRepository.save(tag)
+                        })
 
                         return res.status(201).send('게시글 추가');
                     }
