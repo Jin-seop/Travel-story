@@ -60,7 +60,7 @@ createConnection()
                         return res.status(200).send(content);
                     }
                 );
-                //게시글 추가
+                //게시글 추가(태그,이미지 추가 할 것!)
                 this.app.post(
                     '/addPost',
                     async (req: express.Request, res: express.Response) => {
@@ -77,6 +77,21 @@ createConnection()
                         return res.status(201).send('게시글 추가');
                     }
                 );
+
+                //게시글 삭제 (유저이름과 제목,작성시간 필요!)
+                    this.app.delete('/post',async (req: express.Request, res: express.Response) => {
+                        const user = await getRepository(User.User).find({
+                            username: req.body.username
+                        });
+                        const deleteContent = await getConnection()
+                        .createQueryBuilder()
+                        .delete()
+                        .from(Content.Content)
+                        .where(`content.created_at = '${req.body.created_at}' and content.title = '${req.body.title}' `,{ user })
+                        .execute()
+                        return res.status(200)
+                    })
+
                 // 유저 추가
                 this.app.post(
                     '/signup',

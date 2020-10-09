@@ -24,7 +24,7 @@ export class Content {
         default: () => 'CURRENT_TIMESTAMP',
         nullable: true,
     })
-    create_time!: Timestamp;
+    create_time: Timestamp;
 
     @ManyToOne(() => User, (user) => user.contents)
     user: User;
