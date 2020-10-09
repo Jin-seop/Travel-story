@@ -27,7 +27,7 @@ export class Content {
     create_time!: Timestamp;
 
     @ManyToOne(() => User, (user) => user.contents)
-    user!: User;
+    user: User;
 
     @OneToMany(() => Image, (image) => image.content)
     images!: Image[];

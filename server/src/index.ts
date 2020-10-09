@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import * as cors from 'cors';
-import { createConnection, getRepository } from 'typeorm';
+import { createConnection, getRepository, getConnection } from 'typeorm';
 import { User, Content, Image, Tag } from './entity';
 
 createConnection()
@@ -57,20 +57,24 @@ createConnection()
                         const content = await getRepository(
                             Content.Content
                         ).find(req.body.title);
-                        res.status(200).send(content);
+                        return res.status(200).send(content);
                     }
                 );
-                //게시글 추가 에러 발생
+                //게시글 추가
                 this.app.post(
                     '/addPost',
                     async (req: express.Request, res: express.Response) => {
-                        const content = await getRepository(
-                            Content.Content
-                        ).create(req.body);
-                        const result = await getRepository(Content.Content)
-                            .save(content)
-                            .catch((err) => console.error(err));
-                        return res.send(result);
+                        const user = await getRepository(User.User).findOne({
+                            username: req.body.username,
+                        });
+                        const content = await getConnection()
+                            .createQueryBuilder()
+                            .insert()
+                            .into(Content.Content)
+                            .values([{ title: req.body.title, user }])
+                            .execute();
+
+                        return res.status(201).send('게시글 추가');
                     }
                 );
                 // 유저 추가
