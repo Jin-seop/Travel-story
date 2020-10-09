@@ -18,7 +18,7 @@ DeletePost
 {% endapi-method-headers %}
 
 {% api-method-body-parameters %}
-{% api-method-parameter name="userId" type="string" required=false %}
+{% api-method-parameter name="username" type="string" required=false %}
 
 {% endapi-method-parameter %}
 
@@ -26,7 +26,7 @@ DeletePost
 
 {% endapi-method-parameter %}
 
-{% api-method-parameter name="tag" type="string" required=false %}
+{% api-method-parameter name="created\_at" type="string" required=false %}
 
 {% endapi-method-parameter %}
 {% endapi-method-body-parameters %}
