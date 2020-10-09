@@ -18,7 +18,7 @@ This endpoint allows you to get free cakes.
 {% endapi-method-headers %}
 
 {% api-method-form-data-parameters %}
-{% api-method-parameter name="userId" type="string" required=false %}
+{% api-method-parameter name="username" type="string" required=false %}
 
 {% endapi-method-parameter %}
 
