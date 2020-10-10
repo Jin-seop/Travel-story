@@ -49,6 +49,7 @@ createConnection()
                 this.app.get(
                     '/NewPost',
                     async (req: express.Request, res: express.Response) => {
+<<<<<<< HEAD
                         const user = await getRepository(User.User)
                             .createQueryBuilder('user')
                             .leftJoinAndSelect('user.contents', 'content')
@@ -57,6 +58,16 @@ createConnection()
                             .getMany()
                             .catch((err) => res.sendStatus(404));
                         return res.status(200).send(user);
+=======
+                        const content = await getRepository(Content.Content)
+                        .createQueryBuilder('content')
+                        .orderBy('created_at','DESC')
+                        .leftJoinAndSelect('content.images','image')
+                        .leftJoinAndSelect('content.tags','tag')
+                        .getMany()
+                        .then(result => res.status(200).send(result))
+                        .catch(err => res.sendStatus(404))
+>>>>>>> de3ccef01594fc113c226fc64d8ca21123131dcc
                     }
                 );
 
