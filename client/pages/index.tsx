@@ -106,7 +106,7 @@ useEffect(() => {
       </div>
     </div>
       <div className={style.serchContainer}>
-        <h1>$명의 여행객들이 기록을 남겼습니다!</h1>
+        <h1>{data.length}명의 여행객들이 기록을 남겼습니다!</h1>
         <h2>로그인을 하고 기록을 남겨보세요!</h2>
         <form>
           <button onClick={ (e) => {
