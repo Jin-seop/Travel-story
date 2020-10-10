@@ -18,7 +18,7 @@ const Body  = () => {
       return (
         <li
             onClick={() => {
-              router.push("/PostDetailPage");
+              router.push({pathname:'/PostDetailPage',query:{id : post.id ,title : post.title , created_at : post.create_time}});
             }}
             key={post.id}
           >

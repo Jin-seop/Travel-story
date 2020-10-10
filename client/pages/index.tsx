@@ -18,7 +18,11 @@ const Home = () => {
         <h1>$명의 여행객들이 기록을 남겼습니다!</h1>
         <h2>로그인을 하고 기록을 남겨보세요!</h2>
         <form>
-          <button onClick={ () => setTagSerch(!tagSerch)} >{ tagSerch ? "태그" : "제목" }</button>
+          <button onClick={ (e) => {
+            e.preventDefault()
+            setTagSerch(!tagSerch)}} >{ tagSerch ? "태그" : "제목" 
+            }
+            </button>
           <input />
         </form>
       </div>
