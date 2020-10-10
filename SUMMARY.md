@@ -18,4 +18,5 @@
 * [회원가입](undefined-4/undefined-1.md)
 * [비밀번호 찾기](undefined-4/undefined-2.md)
 * [회원정보 수정](undefined-4/undefined-3.md)
+* [로그아웃](undefined-4/undefined-4.md)
 
