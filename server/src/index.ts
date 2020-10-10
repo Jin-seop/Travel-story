@@ -195,6 +195,30 @@ createConnection()
                     }
                 );
 
+                //게시글 상세정보
+                this.app.post(
+                    '/post',
+                    async (req: express.Request, res: express.Response) => {
+                        try {
+                            //req.body ==  content.id , content.title, content.created_at
+                            const content = await getRepository(User.User)
+                                .createQueryBuilder('user')
+                                .leftJoinAndSelect('user.contents', 'content')
+                                .where('content.id like :id', {
+                                    id: `%${req.body.id}%`,
+                                })
+                                .leftJoinAndSelect('content.images', 'image')
+                                .leftJoinAndSelect('content.tags', 'tag')
+
+                                .getOne()
+                                .catch((err) => res.sendStatus(404));
+                            return res.status(200).send(content);
+                        } catch (error) {
+                            console.error(error);
+                        }
+                    }
+                );
+
                 // 유저 추가
                 this.app.post(
                     '/signup',
