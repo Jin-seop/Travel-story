@@ -9,6 +9,8 @@ export class Image {
     @Column()
     imgName: string;
 
-    @ManyToOne(() => Content, (content) => content.images)
+    @ManyToOne(() => Content, (content) => content.images, {
+        onDelete: 'CASCADE',
+    })
     content: Content;
 }

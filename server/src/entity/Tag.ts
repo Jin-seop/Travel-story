@@ -9,6 +9,8 @@ export class Tag {
     @Column()
     tagName: string;
 
-    @ManyToOne(() => Content, (content) => content.tags)
+    @ManyToOne(() => Content, (content) => content.tags, {
+        onDelete: 'CASCADE',
+    })
     content: Content;
 }
