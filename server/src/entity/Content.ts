@@ -24,14 +24,23 @@ export class Content {
         default: () => 'CURRENT_TIMESTAMP',
         nullable: true,
     })
-    create_time: Timestamp;
+    created_at: Timestamp;
 
-    @ManyToOne(() => User, (user) => user.contents)
+    @ManyToOne(() => User, (user) => user.contents, {
+        nullable: false,
+        onDelete: 'CASCADE',
+    })
     user: User;
 
-    @OneToMany(() => Image, (image) => image.content)
+    @OneToMany(() => Image, (image) => image.content, {
+        cascade: true,
+        onDelete: 'CASCADE',
+    })
     images!: Image[];
 
-    @OneToMany(() => Tag, (tag) => tag.content)
+    @OneToMany(() => Tag, (tag) => tag.content, {
+        cascade: true,
+        onDelete: 'CASCADE',
+    })
     tags!: Tag[];
 }

@@ -8,7 +8,8 @@
         "start": "nodemon --watch src --delay 1 --exec 'ts-node' src/index.ts",
         "build": "webpack --config webpack.config.js",
         "db": "ts-node src/index.ts",
-        "migration": "ts-node ./node_modules/typeorm/cli.js migration:run"
+        "migration": "ts-node ./node_modules/typeorm/cli.js migration:run",
+        "revert": "ts-node ./node_modules/typeorm/cli.js migration:revert"
     },
     "author": "",
     "license": "ISC",

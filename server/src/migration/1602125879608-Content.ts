@@ -16,6 +16,8 @@ export class Content1602125879608 implements MigrationInterface {
                         name: 'id',
                         type: 'int',
                         isPrimary: true,
+                        isGenerated : true,
+                        generationStrategy : 'increment'
                     },
                     {
                         name: 'title',
