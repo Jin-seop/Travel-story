@@ -48,7 +48,7 @@ createConnection()
                         .leftJoinAndSelect('user.contents','content')
                         .leftJoinAndSelect('content.images','image')
                         .leftJoinAndSelect('content.tags','tag')
-                        .getMany()
+                        .getMany().catch(err => res.sendStatus(404))
                         return res.status(200).send(user)
                     }
                 );
@@ -63,7 +63,7 @@ createConnection()
                         .where('content.title like :title',{title:`%${req.body.title}%`})
                         .leftJoinAndSelect('content.images','image')
                         .leftJoinAndSelect('content.tags','tag')
-                        .getMany()
+                        .getMany().catch(err => res.sendStatus(404))
                         return res.status(200).send(content);
                     }
                 );
@@ -95,9 +95,9 @@ createConnection()
                             tag.tagName = req.body.imgName
                             tag.content = result.identifiers[0].id
                             tagRepository.save(tag)
-                        })
+                        }).catch(err => res.sendStatus(404))
 
-                        return res.status(201).send('게시글 추가');
+                        return res.sendStatus(201)
                     }
                 );
                     //게시글 수정
@@ -105,14 +105,29 @@ createConnection()
                     const user = await getRepository(User.User).find({
                         username: req.body.username
                     });
-
+                    const content = await getRepository(Content.Content).findOne({
+                        title:req.body.title,
+                        create_time:req.body.created_at
+                    })
                     const updateContent = await getConnection()
                     .createQueryBuilder()
                     .update(Content.Content)
                     .set({ title:req.body.title })
                     .where(`content.created_at = '${req.body.created_at}'`,{ user })
-                    .execute().catch(err => console.error(err));
-                    return res.status(201)
+                    .execute() 
+                    const updateImg = await getConnection()
+                    .createQueryBuilder()
+                    .update(Image.Image)
+                    .set({imgName:req.body.imgName})
+                    .where(`content.id = ${content.id}`)
+                    .execute()
+                    const updateTag = await getConnection()
+                    .createQueryBuilder()
+                    .update(Tag.Tag)
+                    .set({tagName:req.body.tagName})
+                    .where(`content.id = ${content.id}`)
+                    .execute().catch(err => res.sendStatus(404))
+                    return res.sendStatus(201)
                 })
 
                 //게시글 삭제 (유저이름과 제목,작성시간 필요!)
@@ -125,8 +140,8 @@ createConnection()
                         .delete()
                         .from(Content.Content)
                         .where(`content.created_at = '${req.body.created_at}' and content.title = '${req.body.title}' `,{ user })
-                        .execute()
-                        return res.status(200)
+                        .execute().catch(err => res.sendStatus(404))
+                        return res.sendStatus(200)
                     })
 
                 // 유저 추가
@@ -137,15 +152,15 @@ createConnection()
                             email: req.body.email,
                         });
                         if (user) {
-                            return res.send('이미 존재하는 유저입니다.');
+                            return res.sendStatus(404);
                         } else {
                             const addUser = await getRepository(
                                 User.User
                             ).create(req.body);
                             const result = await getRepository(User.User)
                                 .save(addUser)
-                                .catch((err) => console.error(err));
-                            return res.status(201);
+                                .catch((err) => res.sendStatus(404));
+                            return res.sendStatus(201)
                         }
                     }
                 );
