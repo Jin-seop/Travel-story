@@ -2,8 +2,14 @@ import 'reflect-metadata';
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import * as cors from 'cors';
-import { createConnection, getRepository, getConnection, createQueryBuilder } from 'typeorm';
+import {
+    createConnection,
+    getRepository,
+    getConnection,
+    createQueryBuilder,
+} from 'typeorm';
 import { User, Content, Image, Tag } from './entity';
+import { WSAEHOSTUNREACH } from 'constants';
 
 createConnection()
     .then(async (connection) => {
@@ -44,12 +50,13 @@ createConnection()
                     '/NewPost',
                     async (req: express.Request, res: express.Response) => {
                         const user = await getRepository(User.User)
-                        .createQueryBuilder('user')
-                        .leftJoinAndSelect('user.contents','content')
-                        .leftJoinAndSelect('content.images','image')
-                        .leftJoinAndSelect('content.tags','tag')
-                        .getMany().catch(err => res.sendStatus(404))
-                        return res.status(200).send(user)
+                            .createQueryBuilder('user')
+                            .leftJoinAndSelect('user.contents', 'content')
+                            .leftJoinAndSelect('content.images', 'image')
+                            .leftJoinAndSelect('content.tags', 'tag')
+                            .getMany()
+                            .catch((err) => res.sendStatus(404));
+                        return res.status(200).send(user);
                     }
                 );
 
@@ -58,12 +65,33 @@ createConnection()
                     '/serch/title',
                     async (req: express.Request, res: express.Response) => {
                         const content = await getRepository(User.User)
-                        .createQueryBuilder('user')
-                        .leftJoinAndSelect('user.contents','content')
-                        .where('content.title like :title',{title:`%${req.body.title}%`})
-                        .leftJoinAndSelect('content.images','image')
-                        .leftJoinAndSelect('content.tags','tag')
-                        .getMany().catch(err => res.sendStatus(404))
+                            .createQueryBuilder('user')
+                            .leftJoinAndSelect('user.contents', 'content')
+                            .where('content.title like :title', {
+                                title: `%${req.body.title}%`,
+                            })
+                            .leftJoinAndSelect('content.images', 'image')
+                            .leftJoinAndSelect('content.tags', 'tag')
+                            .getMany()
+                            .catch((err) => res.sendStatus(404));
+                        console.log(content);
+                        return res.status(200).send(content);
+                    }
+                );
+                //태그 검색  - 복붙상태만 되어있음. 원하는 태그 내용만을 검색하는 것.
+                this.app.post(
+                    '/serch/tag',
+                    async (req: express.Request, res: express.Response) => {
+                        const content = await getRepository(User.User)
+                            .createQueryBuilder('user')
+                            .leftJoinAndSelect('user.contents', 'content')
+                            .leftJoinAndSelect('content.images', 'image')
+                            .leftJoinAndSelect('content.tags', 'tag')
+                            .where('tag.tagName like :tagName', {
+                                tagName: `%${req.body.tagName}%`,
+                            })
+                            .getMany()
+                            .catch((err) => res.sendStatus(404));
                         return res.status(200).send(content);
                     }
                 );
@@ -74,75 +102,102 @@ createConnection()
                         const user = await getRepository(User.User).findOne({
                             username: req.body.username,
                         });
-
+                        console.log('user', user);
+                        const id = user.id;
+                        console.log('userid', id);
                         //글 추가
                         const content = await getConnection()
-                        .createQueryBuilder()
-                        .insert()
-                        .into(Content.Content)
-                        .values([{ title: req.body.title, user }])
-                        .execute()
-                        .then(result => {
-                            //이미지 추가
-                            const imageRepository = getRepository(Image.Image)
-                            const image = imageRepository.create()
-                            image.imgName = req.body.imgName
-                            image.content = result.identifiers[0].id
-                            imageRepository.save(image)
-                            //태그 추가
-                            const tagRepository = getRepository(Tag.Tag)
-                            const tag = tagRepository.create()
-                            tag.tagName = req.body.imgName
-                            tag.content = result.identifiers[0].id
-                            tagRepository.save(tag)
-                        }).catch(err => res.sendStatus(404))
+                            .createQueryBuilder()
+                            .insert()
+                            .into(Content.Content)
+                            .values([{ title: req.body.title, user }])
+                            .execute()
+                            .then((result) => {
+                                //이미지 추가
+                                const imageRepository = getRepository(
+                                    Image.Image
+                                );
+                                const image = imageRepository.create();
+                                image.imgName = req.body.imgName;
+                                image.content = result.identifiers[0].id;
+                                imageRepository.save(image);
+                                //태그 추가
+                                const tagRepository = getRepository(Tag.Tag);
+                                const tag = tagRepository.create();
+                                tag.tagName = req.body.imgName;
+                                tag.content = result.identifiers[0].id;
+                                tagRepository.save(tag);
+                                console.log('result', result);
+                            })
+                            .catch((err) => res.sendStatus(404));
 
-                        return res.sendStatus(201)
+                        return res.sendStatus(201);
                     }
                 );
-                    //게시글 수정
-                this.app.put('/post', async (req: express.Request, res: express.Response) => {
-                    const user = await getRepository(User.User).find({
-                        username: req.body.username
-                    });
-                    const content = await getRepository(Content.Content).findOne({
-                        title:req.body.title,
-                        create_time:req.body.created_at
-                    })
-                    const updateContent = await getConnection()
-                    .createQueryBuilder()
-                    .update(Content.Content)
-                    .set({ title:req.body.title })
-                    .where(`content.created_at = '${req.body.created_at}'`,{ user })
-                    .execute() 
-                    const updateImg = await getConnection()
-                    .createQueryBuilder()
-                    .update(Image.Image)
-                    .set({imgName:req.body.imgName})
-                    .where(`content.id = ${content.id}`)
-                    .execute()
-                    const updateTag = await getConnection()
-                    .createQueryBuilder()
-                    .update(Tag.Tag)
-                    .set({tagName:req.body.tagName})
-                    .where(`content.id = ${content.id}`)
-                    .execute().catch(err => res.sendStatus(404))
-                    return res.sendStatus(201)
-                })
-
-                //게시글 삭제 (유저이름과 제목,작성시간 필요!)
-                    this.app.delete('/post',async (req: express.Request, res: express.Response) => {
+                //게시글 수정
+                this.app.put(
+                    '/post',
+                    async (req: express.Request, res: express.Response) => {
                         const user = await getRepository(User.User).find({
-                            username: req.body.username
+                            username: req.body.username,
+                        });
+                        const content = await getRepository(
+                            Content.Content
+                        ).findOne({
+                            title: req.body.title,
+                            created_at: req.body.created_at,
+                        });
+                        const updateContent = await getConnection()
+                            .createQueryBuilder()
+                            .update(Content.Content)
+                            .set({ title: req.body.title })
+                            .where(
+                                `content.created_at = '${req.body.created_at}'`,
+                                { user }
+                            )
+                            .execute();
+                        const updateImg = await getConnection()
+                            .createQueryBuilder()
+                            .update(Image.Image)
+                            .set({ imgName: req.body.imgName })
+                            .where(`content.id = ${content.id}`)
+                            .execute();
+                        const updateTag = await getConnection()
+                            .createQueryBuilder()
+                            .update(Tag.Tag)
+                            .set({ tagName: req.body.tagName })
+                            .where(`content.id = ${content.id}`)
+                            .execute()
+                            .catch((err) => res.sendStatus(404));
+                        return res.sendStatus(201);
+                    }
+                );
+
+                //게시글 삭제 (유저이름과 제목,작성시간 필요!) -- cascade 설정 완료. 수동수정할 필요 없음
+                this.app.delete(
+                    '/post',
+                    async (req: express.Request, res: express.Response) => {
+                        const user = await getRepository(User.User).find({
+                            username: req.body.username,
                         });
                         const deleteContent = await getConnection()
-                        .createQueryBuilder()
-                        .delete()
-                        .from(Content.Content)
-                        .where(`content.created_at = '${req.body.created_at}' and content.title = '${req.body.title}' `,{ user })
-                        .execute().catch(err => res.sendStatus(404))
-                        return res.sendStatus(200)
-                    })
+                            .createQueryBuilder()
+                            .delete()
+                            .from(Content.Content)
+                            .where(
+                                `content.created_at = '${req.body.created_at}' and content.title = '${req.body.title}' `,
+                                { user }
+                            )
+                            .execute()
+                            .then((result) => {
+                                return res.sendStatus(200);
+                            })
+                            .catch((err) => {
+                                console.log(err);
+                                res.sendStatus(404);
+                            });
+                    }
+                );
 
                 // 유저 추가
                 this.app.post(
@@ -160,7 +215,28 @@ createConnection()
                             const result = await getRepository(User.User)
                                 .save(addUser)
                                 .catch((err) => res.sendStatus(404));
-                            return res.sendStatus(201)
+                            return res.sendStatus(201);
+                        }
+                    }
+                );
+                //로그인 req요청에 맞는 유저가 있을 시, res 200 ELSE 404 response
+                this.app.post(
+                    '/signin',
+                    async (req: express.Request, res: express.Response) => {
+                        try {
+                            const user = await getRepository(User.User).findOne(
+                                {
+                                    email: req.body.email,
+                                    password: req.body.password,
+                                }
+                            );
+                            if (user) {
+                                return res.sendStatus(200);
+                            } else {
+                                return res.sendStatus(404);
+                            }
+                        } catch (error) {
+                            console.error(error);
                         }
                     }
                 );
