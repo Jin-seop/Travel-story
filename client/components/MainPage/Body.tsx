@@ -1,53 +1,54 @@
 import style from "../../pages/styles/Main.module.scss";
 import { useRouter } from "next/router";
+import Axios from "axios";
+import { useEffect, useState } from "react";
 
-const Body = () => {
+const Body  = () => {
   const router = useRouter();
+  const [data,setData] = useState([])
+  const newPostHandler = () => {
+    Axios.get('http://localhost:4000/NewPost')
+    .then(res => {
+      setData(res.data)
+    })
+  }
+
+  const newPostRenderHandler = () => {
+    return data.map((post :any,index :number) => {
+      return (
+        <li
+            onClick={() => {
+              router.push("/PostDetailPage");
+            }}
+            key={post.id}
+          >
+            <div className={style.contentContainer}>
+              <img
+                src={post.images.length !== 0 ? post.images[0] : null}
+                alt="#"
+              />
+              <div className={style.writeContainer}>
+                <p>{post.title}</p>
+              </div>
+              <p>채팅인원: %%</p>
+            </div>
+          </li>
+      )
+    })
+  }
+useEffect(newPostHandler,[])
   return (
     <div>
       <div className={style.bodyContainer}>
         <div className={style.textContainer}>
-          <p>최신글</p>
+          <p onClick={newPostHandler} >최신글</p>
           <div />
-          <p>채팅 많은 글</p>
+          <p  >채팅 많은 글</p>
         </div>
       </div>
       <div className={style.bodyContentContainer}>
         <ul>
-          <li
-            onClick={() => {
-              router.push("/PostDetailPage");
-            }}
-          >
-            <div className={style.contentContainer}>
-              <img
-                src="https://miro.medium.com/max/700/0*iQn2GLCJi5CSDLKq"
-                alt="#"
-              />
-              <div className={style.writeContainer}>
-                <p>-제목- alskmdasdasdsad</p>
-                <p>-작성자- asdasdasdasd</p>
-              </div>
-              <p>채팅인원: %%</p>
-            </div>
-          </li>
-          <li
-            onClick={() => {
-              router.push("/PostDetailPage");
-            }}
-          >
-            <div className={style.contentContainer}>
-              <img
-                src="https://miro.medium.com/fit/c/96/96/1*Gw27IE_koE49KYrVr0k0AA.jpeg"
-                alt="#"
-              />
-              <div className={style.writeContainer}>
-                <p>-제목- alskmdasdasdsad</p>
-                <p>-작성자- asdasdasdasd</p>
-              </div>
-              <p>채팅인원: %%</p>
-            </div>
-          </li>
+          {data.length !== 0 ? newPostRenderHandler() : null}
         </ul>
       </div>
     </div>
