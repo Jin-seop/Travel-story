@@ -49,25 +49,14 @@ createConnection()
                 this.app.get(
                     '/NewPost',
                     async (req: express.Request, res: express.Response) => {
-<<<<<<< HEAD
-                        const user = await getRepository(User.User)
-                            .createQueryBuilder('user')
-                            .leftJoinAndSelect('user.contents', 'content')
+                        const content = await getRepository(Content.Content)
+                            .createQueryBuilder('content')
+                            .orderBy('created_at', 'DESC')
                             .leftJoinAndSelect('content.images', 'image')
                             .leftJoinAndSelect('content.tags', 'tag')
                             .getMany()
+                            .then((result) => res.status(200).send(result))
                             .catch((err) => res.sendStatus(404));
-                        return res.status(200).send(user);
-=======
-                        const content = await getRepository(Content.Content)
-                        .createQueryBuilder('content')
-                        .orderBy('created_at','DESC')
-                        .leftJoinAndSelect('content.images','image')
-                        .leftJoinAndSelect('content.tags','tag')
-                        .getMany()
-                        .then(result => res.status(200).send(result))
-                        .catch(err => res.sendStatus(404))
->>>>>>> de3ccef01594fc113c226fc64d8ca21123131dcc
                     }
                 );
 
@@ -89,7 +78,7 @@ createConnection()
                         return res.status(200).send(content);
                     }
                 );
-                //태그 검색  - 복붙상태만 되어있음. 원하는 태그 내용만을 검색하는 것.
+                //태그 검색
                 this.app.post(
                     '/serch/tag',
                     async (req: express.Request, res: express.Response) => {
@@ -113,9 +102,6 @@ createConnection()
                         const user = await getRepository(User.User).findOne({
                             username: req.body.username,
                         });
-                        console.log('user', user);
-                        const id = user.id;
-                        console.log('userid', id);
                         //글 추가
                         const content = await getConnection()
                             .createQueryBuilder()
@@ -138,7 +124,6 @@ createConnection()
                                 tag.tagName = req.body.imgName;
                                 tag.content = result.identifiers[0].id;
                                 tagRepository.save(tag);
-                                console.log('result', result);
                             })
                             .catch((err) => res.sendStatus(404));
 
