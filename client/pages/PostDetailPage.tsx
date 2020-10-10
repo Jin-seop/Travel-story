@@ -1,12 +1,45 @@
+import Axios from "axios";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import { Header } from "../components/PostPage";
 import style from "./styles/PostDetailPage.module.scss";
 
 
 const PostDetailPage = (props) => {
   const router = useRouter();
-  console.log(router.query)
+  const [userName,setUserName] = useState<String>('')
+  const [image,setImage] = useState()
+  const [title,setTitle] = useState<String>('')
+  const [tag,setTag] = useState()
+console.log(router)
+  const postHandler = () => {
+    Axios.post('http://localhost:4000/post',{
+      id:router.query.id
+    }).then(res => {
+      if(res.status === 200){
+        setUserName(res.data.username)
+        setTitle(res.data.contents[0].title)
+        setImage(res.data.contents[0].images)
+        setTag(res.data.contents[0].tags)
+      }
+    })
+  }
+  
+  const tagHandler = () => {
+    let result = []
+    for(let key in tag){
+      result.push([tag[key].id,tag[key].tagName])
+    }
+    return result.map(tag => {
+      return (
+        <li key={tag[0]}>{tag[1]}</li>
+      )
+    })
+  }
+
+  useEffect(()=>postHandler(),[router.query.id])
+
   return (
     <div>
       <Head>
@@ -16,6 +49,7 @@ const PostDetailPage = (props) => {
       
     <div className={style.bodyContainer}>
       <div className={style.textContainer}>
+        
         <form>
           <a
             onClick={() => {
@@ -33,8 +67,8 @@ const PostDetailPage = (props) => {
           </a>
         </form>
         <div>
-          <p>{router.query.title}</p>
-          <p>게시자</p>
+          <p>제목 : {title}</p>
+          <p>게시자 : {userName}</p>
         </div>
         <div className={style.imgContainer}>
           <img
@@ -43,8 +77,7 @@ const PostDetailPage = (props) => {
           />
         </div>
         <ul>
-          <li>태그</li>
-          <li>태그</li>
+          {tag ? tagHandler() : null}
         </ul>
       </div>
 
