@@ -13,12 +13,13 @@ import { Tag } from './Tag';
 @Entity()
 export class Content {
     @PrimaryGeneratedColumn()
-    id: number;
+    id!: number;
 
     @Column()
-    title: string;
+    title!: string;
 
     @Column({
+        name: 'created_at',
         type: 'timestamp',
         default: () => 'CURRENT_TIMESTAMP',
         nullable: true,
@@ -29,8 +30,8 @@ export class Content {
     user: User;
 
     @OneToMany(() => Image, (image) => image.content)
-    images: Image[];
+    images!: Image[];
 
     @OneToMany(() => Tag, (tag) => tag.content)
-    tags: Tag[];
+    tags!: Tag[];
 }

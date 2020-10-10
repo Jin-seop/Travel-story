@@ -5,8 +5,7 @@
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "nodemon --watch src --delay 1 --exec 'ts-node' src/www.ts",
-        "dev": "node --inspect -r ts-node/register src/www.ts",
+        "start": "nodemon --watch src --delay 1 --exec 'ts-node' src/index.ts",
         "build": "webpack --config webpack.config.js",
         "db": "ts-node src/index.ts",
         "migration": "ts-node ./node_modules/typeorm/cli.js migration:run",
