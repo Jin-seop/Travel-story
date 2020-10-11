@@ -6,18 +6,18 @@ import { Header } from "../components/PostPage";
 import style from "./styles/PostDetailPage.module.scss";
 
 
-const PostDetailPage = (props) => {
+const PostDetailPage = () => {
   const router = useRouter();
-  const [userName,setUserName] = useState<String>('')
-  const [image,setImage] = useState()
-  const [title,setTitle] = useState<String>('')
-  const [tag,setTag] = useState()
-console.log(router)
+  const [userName, setUserName] = useState<String>('')
+  const [image, setImage] = useState<Object>()
+  const [title, setTitle] = useState<String>('')
+  const [tag, setTag] = useState<Object>()
+
   const postHandler = () => {
-    Axios.post('http://localhost:4000/post',{
-      id:router.query.id
+    Axios.post('http://localhost:4000/post', {
+      id: router.query.id
     }).then(res => {
-      if(res.status === 200){
+      if (res.status === 200) {
         setUserName(res.data.username)
         setTitle(res.data.contents[0].title)
         setImage(res.data.contents[0].images)
@@ -25,11 +25,11 @@ console.log(router)
       }
     })
   }
-  
+
   const tagHandler = () => {
     let result = []
-    for(let key in tag){
-      result.push([tag[key].id,tag[key].tagName])
+    for (let key in tag) {
+      result.push([tag[key].id, tag[key].tagName])
     }
     return result.map(tag => {
       return (
@@ -38,7 +38,7 @@ console.log(router)
     })
   }
 
-  useEffect(()=>postHandler(),[router.query.id])
+  useEffect(() => postHandler(), [router.query.id])
 
   return (
     <div>
@@ -46,48 +46,48 @@ console.log(router)
         <title>Travel Story</title>
       </Head>
       <Header />
-      
-    <div className={style.bodyContainer}>
-      <div className={style.textContainer}>
-        
-        <form>
-          <a
-            onClick={() => {
-              router.push("/PostPage");
-            }}
-          >
-            수정하기
-          </a>
-          <a
-            onClick={() => {
-              router.push("/");
-            }}
-          >
-            삭제하기
-          </a>
-        </form>
-        <div>
-          <p>제목 : {title}</p>
-          <p>게시자 : {userName}</p>
-        </div>
-        <div className={style.imgContainer}>
-          <img
-            src="https://user-images.githubusercontent.com/58946982/95218769-99197680-082f-11eb-860f-9dea84cdd34f.png"
-            alt="img"
-          />
-        </div>
-        <ul>
-          {tag ? tagHandler() : null}
-        </ul>
-      </div>
 
-      <div className={style.chatContainer}>
-        <div className={style.chatArea} />
-        <form>
-          <input placeholder="대화를 입력해주세요" />
-        </form>
+      <div className={style.bodyContainer}>
+        <div className={style.textContainer}>
+
+          <form>
+            <a
+              onClick={() => {
+                router.push("/PostPage");
+              }}
+            >
+              수정하기
+          </a>
+            <a
+              onClick={() => {
+                router.push("/");
+              }}
+            >
+              삭제하기
+          </a>
+          </form>
+          <div>
+            <p>제목 : {title}</p>
+            <p>게시자 : {userName}</p>
+          </div>
+          <div className={style.imgContainer}>
+            <img
+              src="https://user-images.githubusercontent.com/58946982/95218769-99197680-082f-11eb-860f-9dea84cdd34f.png"
+              alt="img"
+            />
+          </div>
+          <ul>
+            {tag ? tagHandler() : null}
+          </ul>
+        </div>
+
+        <div className={style.chatContainer}>
+          <div className={style.chatArea} />
+          <form>
+            <input placeholder="대화를 입력해주세요" />
+          </form>
+        </div>
       </div>
-    </div>
     </div>
   );
 };
