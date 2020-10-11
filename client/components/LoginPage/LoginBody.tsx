@@ -1,6 +1,9 @@
+import ReactDOM from 'react-dom';
 import Axios from "axios";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import GoogleLogin from 'react-google-login';
+import googleClient from '../../pages/config/google.json'
 import style from "../../pages/styles/LoginPage.module.scss";
 
 const LoginBody = () => {
@@ -26,14 +29,12 @@ const LoginBody = () => {
       .catch(err => alert('입력이 잘 못되었습니다.'))
   }
 
-  const googleLogin = () => {
-    Axios.get('http://localhost:4000/auth/google', {
-      headers: {
-        'Access-Control-Allow-Origin': '*'
-      }
-    })
-      .then(res => console.log(res)).catch(err => console.error(err))
+  const responseGoogle = (response) => {
+    console.log(response);
   }
+
+
+
   return (
     <div className={style.LoginBodyContainer}>
       <div className={style.LoginContainer}>
@@ -52,11 +53,14 @@ const LoginBody = () => {
             loginHandler()
           }} >로그인</button>
         </form>
-        <img
-          src="https://developers.google.com/identity/images/btn_google_signin_dark_normal_web.png?hl=ko"
-          alt="GoogleLogin"
-          onClick={googleLogin}
+        <GoogleLogin
+          clientId={googleClient.web.client_id}
+          buttonText="Google Login"
+          onSuccess={responseGoogle}
+          onFailure={responseGoogle}
+          cookiePolicy={'single_host_origin'}
         />
+
         <div>
           <a
             onClick={() => {
