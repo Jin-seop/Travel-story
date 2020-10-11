@@ -9,10 +9,9 @@ import {
     createQueryBuilder,
 } from 'typeorm';
 import { User, Content, Image, Tag } from './entity';
-import { WSAEHOSTUNREACH } from 'constants';
 
 createConnection()
-    .then(async (connection) => {
+    .then(async () => {
         class App {
             public app: express.Application;
 
