@@ -5,4 +5,4 @@ tmp/
 temp/
 .idea/
 .vscode/
-config/google.json
+src/config/google.json
