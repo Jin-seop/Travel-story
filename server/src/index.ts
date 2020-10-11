@@ -72,10 +72,8 @@ createConnection()
                             })
                             .leftJoinAndSelect('content.images', 'image')
                             .leftJoinAndSelect('content.tags', 'tag')
-                            .getMany()
+                            .getMany().then(result => res.status(200).send(result))
                             .catch((err) => res.sendStatus(404));
-                        console.log(content);
-                        return res.status(200).send(content);
                     }
                 );
                 //태그 검색
@@ -90,9 +88,8 @@ createConnection()
                             .where('tag.tagName like :tagName', {
                                 tagName: `%${req.body.tagName}%`,
                             })
-                            .getMany()
+                            .getMany().then(result => res.status(200).send(result))
                             .catch((err) => res.sendStatus(404));
-                        return res.status(200).send(content);
                     }
                 );
                 //게시글 추가
@@ -124,10 +121,8 @@ createConnection()
                                 tag.tagName = req.body.imgName;
                                 tag.content = result.identifiers[0].id;
                                 tagRepository.save(tag);
-                            })
+                            }).then(result => res.sendStatus(201))
                             .catch((err) => res.sendStatus(404));
-
-                        return res.sendStatus(201);
                     }
                 );
                 //게시글 수정
@@ -143,7 +138,7 @@ createConnection()
                             title: req.body.title,
                             created_at: req.body.created_at,
                         });
-                        const updateContent = await getConnection()
+                        await getConnection()
                             .createQueryBuilder()
                             .update(Content.Content)
                             .set({ title: req.body.title })
@@ -152,13 +147,13 @@ createConnection()
                                 { user }
                             )
                             .execute();
-                        const updateImg = await getConnection()
+                        await getConnection()
                             .createQueryBuilder()
                             .update(Image.Image)
                             .set({ imgName: req.body.imgName })
                             .where(`content.id = ${content.id}`)
                             .execute();
-                        const updateTag = await getConnection()
+                        await getConnection()
                             .createQueryBuilder()
                             .update(Tag.Tag)
                             .set({ tagName: req.body.tagName })
@@ -169,7 +164,7 @@ createConnection()
                     }
                 );
 
-                //게시글 삭제 (유저이름과 제목,작성시간 필요!) -- cascade 설정 완료. 수동수정할 필요 없음
+                //게시글 삭제  
                 this.app.delete(
                     '/post',
                     async (req: express.Request, res: express.Response) => {
@@ -185,9 +180,9 @@ createConnection()
                                 { user }
                             )
                             .execute()
-                            .then((result) => {
-                                return res.sendStatus(200);
-                            })
+                            .then((result) =>
+                                res.sendStatus(200)
+                            )
                             .catch((err) => {
                                 console.log(err);
                                 res.sendStatus(404);
@@ -200,7 +195,6 @@ createConnection()
                     '/post',
                     async (req: express.Request, res: express.Response) => {
                         try {
-                            //req.body ==  content.id , content.title, content.created_at
                             const content = await getRepository(User.User)
                                 .createQueryBuilder('user')
                                 .leftJoinAndSelect('user.contents', 'content')
@@ -210,9 +204,8 @@ createConnection()
                                 .leftJoinAndSelect('content.images', 'image')
                                 .leftJoinAndSelect('content.tags', 'tag')
 
-                                .getOne()
+                                .getOne().then(result => res.status(200).send(result))
                                 .catch((err) => res.sendStatus(404));
-                            return res.status(200).send(content);
                         } catch (error) {
                             console.error(error);
                         }
@@ -233,9 +226,8 @@ createConnection()
                                 User.User
                             ).create(req.body);
                             const result = await getRepository(User.User)
-                                .save(addUser)
+                                .save(addUser).then(result => res.sendStatus(201))
                                 .catch((err) => res.sendStatus(404));
-                            return res.sendStatus(201);
                         }
                     }
                 );
