@@ -23,14 +23,14 @@ const LoginBody = () => {
       password
     }).then(res => {
       if (res.status === 200) {
-        return router.push({ pathname: '/', query: { isLogin: true } })
+        return router.push('/')
       }
     })
-      .catch(err => alert('입력이 잘 못되었습니다.'))
+      .catch(err => alert('입력이 잘 못되었습니다'))
   }
 
   const responseGoogle = (response) => {
-    console.log(response);
+    // console.log(response);
   }
 
 

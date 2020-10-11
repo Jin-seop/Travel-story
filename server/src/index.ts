@@ -2,7 +2,10 @@ import 'reflect-metadata';
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import * as cors from 'cors';
-import * as jwt from 'express-jwt'
+import * as jwt from 'jsonwebtoken'
+import * as exJwt from 'express-jwt'
+import * as crypto from 'crypto'
+import * as cookieParser from 'cookie-parser'
 import {
     createConnection,
     getRepository,
@@ -10,7 +13,13 @@ import {
     createQueryBuilder,
 } from 'typeorm';
 import { User, Content, Image, Tag } from './entity';
+const secret = require('./config/jwt.json')
 
+const hash = (password) => {
+    return crypto.createHmac('sha256', secret.secret)
+        .update(password)
+        .digest('hex')
+}
 createConnection()
     .then(async () => {
         class App {
@@ -41,7 +50,7 @@ createConnection()
                         extended: false,
                     })
                 );
-
+                this.app.use(cookieParser(secret.secret))
                 //배포시 경로 바꿔서 파비콘 적용하기(정적 파일제공 참고)
                 // this.app.use(favicon(__dirname + '../images/favicon.ico'));
 
@@ -212,10 +221,13 @@ createConnection()
                     }
                 );
 
-                // 유저 추가
+                // 회원가입(암호화)
                 this.app.post(
                     '/signup',
                     async (req: express.Request, res: express.Response) => {
+                        const { username, email, password } = req.body
+                        //비밀번호 암호화
+                        const hashPassword = hash(password)
                         const user = await getRepository(User.User).findOne({
                             email: req.body.email,
                         });
@@ -224,28 +236,36 @@ createConnection()
                         } else {
                             const addUser = await getRepository(
                                 User.User
-                            ).create(req.body);
+                            )
+                                .create({ username, email, password: hashPassword });
                             const result = await getRepository(User.User)
                                 .save(addUser).then(result => res.sendStatus(201))
                                 .catch((err) => res.sendStatus(404));
                         }
                     }
                 );
-                //로그인 req요청에 맞는 유저가 있을 시, res 200 ELSE 404 response
+                //로그인 (일반 로그인 쿠키 7일 생성)
                 this.app.post(
-                    '/signin',
+                    '/login',
                     async (req: express.Request, res: express.Response) => {
+                        const { username, email, password } = req.body
+                        const hashPassword = hash(password)
                         try {
                             const user = await getRepository(User.User).findOne(
                                 {
-                                    email: req.body.email,
-                                    password: req.body.password,
+                                    email: email,
+                                    password: hashPassword
                                 }
                             );
+                            if (!user) {
+                                return res.sendStatus(403)
+                            }
                             if (user) {
-                                return res.sendStatus(200);
-                            } else {
-                                return res.sendStatus(404);
+                                const token = jwt.sign({ userId: user.email }, secret.secret, { expiresIn: '7d' })
+                                return res.cookie('ClientAuth', token, {
+                                    expires: new Date(Date.now() + 60 * 60 * 1000 * 24 * 7),
+                                    httpOnly: true, signed: true
+                                }).sendStatus(200)
                             }
                         } catch (error) {
                             console.error(error);
