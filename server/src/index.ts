@@ -2,6 +2,7 @@ import 'reflect-metadata';
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import * as cors from 'cors';
+import * as jwt from 'express-jwt'
 import {
     createConnection,
     getRepository,
@@ -29,7 +30,7 @@ createConnection()
                 this.app = express();
                 this.app.use(
                     cors({
-                        origin: true,
+                        origin: '*',
                         methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTION'],
                         credentials: true,
                     })
@@ -251,34 +252,6 @@ createConnection()
                         }
                     }
                 );
-
-                //구글 로그인
-                const passport = require('passport');
-                const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
-                const GOOGLE_CLIENT = require('./config/google.json')
-
-                passport.use(new GoogleStrategy({
-                    clientID: GOOGLE_CLIENT.web.client_id,
-                    clientSecret: GOOGLE_CLIENT.web.client_secret,
-                    callbackURL: GOOGLE_CLIENT.web.redirect_uris[0]
-                },
-                    function (accessToken, refreshToken, profile, done) {
-                        // console.log('googole', accessToken, refreshToken, profile)
-                        //DB유저 저장 구현하기
-                    }
-                ));
-
-                this.app.options('/auth/google', (req: express.Request, res: express.Response) => {
-                    res.sendStatus(200)
-                })
-                this.app.get('/auth/google',
-                    passport.authenticate('google', { scope: 'https://www.googleapis.com/auth/plus.login' }))
-
-                this.app.get('/auth/google/callback',
-                    passport.authenticate('google', { failureRedirect: '/login' }),
-                    function (req, res) {
-                        res.redirect('/');
-                    });
 
             }
         }
