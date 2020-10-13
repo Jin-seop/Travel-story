@@ -24,6 +24,7 @@ const LoginBody = () => {
       password
     }).then(res => {
       if (res.status === 200) {
+        localStorage.setItem('token', res.data)
         alert('로그인 되었습니다.')
         return router.push({
           pathname: '/', query: {

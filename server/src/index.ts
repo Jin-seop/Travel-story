@@ -248,7 +248,7 @@ createConnection()
                 this.app.post(
                     '/login',
                     async (req: express.Request, res: express.Response) => {
-                        const { username, email, password } = req.body
+                        const { email, password } = req.body
                         const hashPassword = hash(password)
                         try {
                             const user = await getRepository(User.User).findOne(
@@ -262,10 +262,7 @@ createConnection()
                             }
                             if (user) {
                                 const token = jwt.sign({ userId: user.email }, secret.secret, { expiresIn: '7d' })
-                                return res.cookie('ClientAuth', token, {
-                                    expires: new Date(Date.now() + 60 * 60 * 1000 * 24 * 7),
-                                    httpOnly: true, signed: true
-                                }).sendStatus(200)
+                                return res.status(200).send(token)
                             }
                         } catch (error) {
                             console.error(error);

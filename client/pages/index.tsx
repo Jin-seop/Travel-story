@@ -48,6 +48,7 @@ const Home = () => {
 
   // 로그아웃 함수
   const logOutHandler = () => {
+    localStorage.clear()
     setIsLogin(false)
   }
 
