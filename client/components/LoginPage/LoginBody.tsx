@@ -11,6 +11,7 @@ const LoginBody = () => {
   const [password, setPassword] = useState('')
   const router = useRouter();
 
+  // 일반 로그인 함수
   const loginHandler = () => {
     if (!email) {
       return alert('email을 입력해주세요')
@@ -29,8 +30,10 @@ const LoginBody = () => {
       .catch(err => alert('입력이 잘 못되었습니다'))
   }
 
+
+  // 구글 로그인 함수
   const responseGoogle = (response) => {
-    // console.log(response);
+    console.log(response);
   }
 
 

@@ -1,6 +1,8 @@
 import { useRouter } from "next/router";
 import style from "../../pages/styles/LoginPage.module.scss";
 
+
+// 비밀번호 찾는 컴포넌트
 const PasswordBody = () => {
   const router = useRouter();
   return (

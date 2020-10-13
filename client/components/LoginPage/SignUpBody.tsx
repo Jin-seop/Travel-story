@@ -3,23 +3,24 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import style from "../../pages/styles/LoginPage.module.scss";
 const SignUpBody = () => {
-  const [name,setName] = useState('')
-  const [email,setEmail] = useState('')
-  const [password,setPassword] = useState('')
-  
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
+  // 회원가입 함수
   const signUpHandler = () => {
-    if(name.length < 6) {
+    if (name.length < 6) {
       return alert('name을 5자 이상 입력해 주세요')
     }
-    if(password.length < 9){
+    if (password.length < 9) {
       return alert('password를 8자 이상 입력해 주세요')
     }
-    Axios.post('http://localhost:4000/signup',{
-      username:name,
+    Axios.post('http://localhost:4000/signup', {
+      username: name,
       password,
       email
     }).then(res => {
-      if(res.status === 201){
+      if (res.status === 201) {
         return router.push('/LoginPage')
       }
     }).catch(err => alert('입력이 잘 못되었습니다.'))
@@ -45,7 +46,8 @@ const SignUpBody = () => {
           }} />
           <button onClick={(e) => {
             e.preventDefault()
-            signUpHandler()}} >회원가입</button>
+            signUpHandler()
+          }} >회원가입</button>
         </form>
         <div>
           <a

@@ -13,6 +13,7 @@ const PostDetailPage = () => {
   const [title, setTitle] = useState<String>('')
   const [tag, setTag] = useState<Object>()
 
+  // 게시글 상세 정보를 불러오는 함수
   const postHandler = () => {
     Axios.post('http://localhost:4000/post', {
       id: router.query.id
@@ -26,6 +27,7 @@ const PostDetailPage = () => {
     })
   }
 
+  // 태그를 불러오는 함수
   const tagHandler = () => {
     let result = []
     for (let key in tag) {
