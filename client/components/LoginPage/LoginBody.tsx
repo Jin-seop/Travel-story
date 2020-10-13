@@ -42,7 +42,7 @@ const LoginBody = () => {
       email: user.ot.Xt,
       username: user.ot.Ad,
     }).then(res => {
-      console.log(res)
+      localStorage.setItem('token', res.data)
       if (res.status === 200) {
         alert('로그인 되었습니다.')
         return router.push({
