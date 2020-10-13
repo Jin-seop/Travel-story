@@ -25,7 +25,11 @@ const LoginBody = () => {
     }).then(res => {
       if (res.status === 200) {
         alert('로그인 되었습니다.')
-        return router.push('/')
+        return router.push({
+          pathname: '/', query: {
+            isLogin: true
+          }
+        })
       }
     })
       .catch(err => alert('입력이 잘 못되었습니다'))
@@ -38,9 +42,14 @@ const LoginBody = () => {
       email: user.ot.Xt,
       username: user.ot.Ad,
     }).then(res => {
+      console.log(res)
       if (res.status === 200) {
         alert('로그인 되었습니다.')
-        return router.push('/')
+        return router.push({
+          pathname: '/', query: {
+            isLogin: true
+          }
+        })
       }
     })
   }

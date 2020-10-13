@@ -279,13 +279,21 @@ createConnection()
                     const user = await getRepository(User.User).findOne(
                         email
                     )
+                    const AddUser = getRepository(User.User)
+                        .create({ username, email, password: hashPassword })
+                    const token = jwt.sign({ userId: email }, secret.secret, { expiresIn: '7d' })
                     if (!user) {
-                        const AddUser = getRepository(User.User)
-                            .create({ username, email, password: hashPassword })
-                        return getRepository(User.User).save(AddUser).then(result => res.sendStatus(200))
+                        getRepository(User.User).save(AddUser)
+                        return res.cookie('ClientAuth', token, {
+                            expires: new Date(Date.now() + 60 * 60 * 1000 * 24 * 7),
+                            httpOnly: true, signed: true
+                        }).sendStatus(200)
                     }
                     if (user) {
-                        return res.sendStatus(200)
+                        return res.cookie('ClientAuth', token, {
+                            expires: new Date(Date.now() + 60 * 60 * 1000 * 24 * 7),
+                            httpOnly: true, signed: true
+                        }).sendStatus(200)
                     }
                 })
             }
