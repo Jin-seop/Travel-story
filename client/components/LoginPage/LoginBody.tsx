@@ -24,6 +24,7 @@ const LoginBody = () => {
       password
     }).then(res => {
       if (res.status === 200) {
+        alert('로그인 되었습니다.')
         return router.push('/')
       }
     })
@@ -32,8 +33,16 @@ const LoginBody = () => {
 
 
   // 구글 로그인 함수
-  const responseGoogle = (response) => {
-    console.log(response);
+  const responseGoogle = (user) => {
+    Axios.post('http://localhost:4000/googleLogin', {
+      email: user.ot.Xt,
+      username: user.ot.Ad,
+    }).then(res => {
+      if (res.status === 200) {
+        alert('로그인 되었습니다.')
+        return router.push('/')
+      }
+    })
   }
 
 
