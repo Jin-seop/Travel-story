@@ -1,11 +1,14 @@
 import styles from "../../pages/styles/PostPage.module.scss";
 import { useRouter } from "next/router";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const router = useRouter();
   return (
     <div className={styles.Header}>
+      <Link to="/">
       <img src="/TravelStoryicon.png" alt="logo" />
+      </Link>
       <div className={styles.ulContainer}>
         <ul>
           <li
