@@ -3,19 +3,24 @@ import Head from "next/head";
 import style from "./styles/Main.module.scss";
 import { useEffect, useState } from "react";
 import Axios from "axios";
-
+import { useSelector,useDispatch  } from 'react-redux';
+import {logoutClick, loginCheck} from "../modules/actions/loginStatus"
 
 const Home = () => {
   const [tagSerch, setTagSerch] = useState(false)
   const [data, setData] = useState([])
-  const [isLogin, setIsLogin] = useState(false)
+  const [isLogin, setIsLogin] = useState('')
   const router = useRouter();
+  const dispatch = useDispatch();
+  const storeLogin = useSelector((state) => state.isLogin);
+  console.log(storeLogin);
 
   // 처음 화면 킬 때,최신글 받아오는 함수 
   const newPostHandler = () => {
     Axios.get('http://localhost:4000/NewPost')
       .then(res => {
         setData(res.data)
+        setIsLogin(storeLogin);
       })
   }
   // 최신글을 화면에 뿌려주는 함수
@@ -49,14 +54,14 @@ const Home = () => {
   // 로그아웃 함수
   const logOutHandler = () => {
     localStorage.clear()
-    setIsLogin(false)
+    dispatch(logoutClick());
   }
 
   // 화면을 처음 킬때 componetdidMount하는 함수
   useEffect(newPostHandler, [])
   useEffect(() => {
     if (router.query && router.query.isLogin) {
-      setIsLogin(true)
+      dispatch(loginCheck());
     }
   }, [router.query.isLogin])
 
@@ -68,7 +73,7 @@ const Home = () => {
       <div className={style.Header}>
         <img src="/TravelStoryicon.png" alt="logo" />
         <div className={style.ulContainer}>
-          {isLogin ? <ul>
+          {storeLogin ? <ul>
             <li
               onClick={() => {
                 router.push("/LoginPage");

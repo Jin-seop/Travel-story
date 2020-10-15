@@ -5,11 +5,14 @@ import { useState } from "react";
 import GoogleLogin from 'react-google-login';
 import googleClient from '../../pages/config/google.json'
 import style from "../../pages/styles/LoginPage.module.scss";
+import { useDispatch  } from 'react-redux';
+import {loginCheck} from "../../modules/actions/loginStatus"
 
 const LoginBody = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const router = useRouter();
+  const dispatch = useDispatch();
 
   // 일반 로그인 함수
   const loginHandler = () => {
@@ -25,11 +28,10 @@ const LoginBody = () => {
     }).then(res => {
       if (res.status === 200) {
         localStorage.setItem('token', res.data)
+        dispatch(loginCheck())
         alert('로그인 되었습니다.')
         return router.push({
-          pathname: '/', query: {
-            isLogin: true
-          }
+          pathname: '/'
         })
       }
     })
@@ -45,11 +47,10 @@ const LoginBody = () => {
     }).then(res => {
       localStorage.setItem('token', res.data)
       if (res.status === 200) {
+        dispatch(loginCheck())
         alert('로그인 되었습니다.')
         return router.push({
-          pathname: '/', query: {
-            isLogin: true
-          }
+          pathname: '/'
         })
       }
     })
