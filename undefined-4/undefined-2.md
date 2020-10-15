@@ -1,6 +1,6 @@
 # 비밀번호 찾기
 
-{% api-method method="post" host="https://api.cakes.com" path="/forgetPassword" %}
+{% api-method method="put" host="https://api.cakes.com" path="/forgetPassword" %}
 {% api-method-summary %}
 Forget password
 {% endapi-method-summary %}
