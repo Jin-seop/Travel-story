@@ -12,10 +12,6 @@ Forget password
 {% api-method-spec %}
 {% api-method-request %}
 {% api-method-body-parameters %}
-{% api-method-parameter name="token" type="string" required=true %}
-
-{% endapi-method-parameter %}
-
 {% api-method-parameter name="email" type="string" required=true %}
 
 {% endapi-method-parameter %}
