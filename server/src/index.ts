@@ -269,6 +269,7 @@ createConnection()
                         }
                     }
                 );
+                //구글 로그인
                 this.app.post('/googleLogin', async (req: express.Request, res: express.Response) => {
                     const { email, username } = req.body
                     const hashPassword = hash(email)

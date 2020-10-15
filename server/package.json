@@ -23,6 +23,7 @@
         "install": "^0.13.0",
         "jsonwebtoken": "^8.5.1",
         "mysql": "^2.18.1",
+        "nodemailer": "^6.4.14",
         "reflect-metadata": "^0.1.13",
         "source-map-support": "^0.5.19",
         "ts-node": "^9.0.0",
