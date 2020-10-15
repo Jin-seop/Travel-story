@@ -337,6 +337,26 @@ createConnection()
 
                 })
 
+                //회원정보 수정
+
+                this.app.put('/editUser', async (req: express.Request, res: express.Response) => {
+                    const { token, email, password } = req.body
+                    const user = await getRepository(User.User).findOne(
+                        email
+                    )
+
+                    if (user) {
+                        createQueryBuilder()
+                            .update(User.User)
+                            .set({ password: hash(password) })
+                            .where("email = :email", { email })
+                            .execute()
+                        return res.sendStatus(201)
+                    }
+                    if (!user) {
+                        return res.sendStatus(404)
+                    }
+                })
 
             }
         }
