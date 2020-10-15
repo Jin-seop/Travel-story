@@ -15,6 +15,7 @@
 ## 회원페이지 <a id="undefined-4"></a>
 
 * [로그인](undefined-4/undefined.md)
+* [구글로그인](undefined-4/undefined-5.md)
 * [회원가입](undefined-4/undefined-1.md)
 * [비밀번호 찾기](undefined-4/undefined-2.md)
 * [회원정보 수정](undefined-4/undefined-3.md)
