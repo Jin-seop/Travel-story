@@ -11,13 +11,11 @@ Detail Post
 
 {% api-method-spec %}
 {% api-method-request %}
-{% api-method-headers %}
-{% api-method-parameter name="cookie" type="string" required=false %}
+{% api-method-body-parameters %}
+{% api-method-parameter name="token" type="string" required=false %}
 
 {% endapi-method-parameter %}
-{% endapi-method-headers %}
 
-{% api-method-body-parameters %}
 {% api-method-parameter name="userId" type="string" required=false %}
 
 {% endapi-method-parameter %}
