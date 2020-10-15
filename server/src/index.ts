@@ -3,7 +3,6 @@ import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import * as cors from 'cors';
 import * as jwt from 'jsonwebtoken'
-import * as exJwt from 'express-jwt'
 import * as crypto from 'crypto'
 import * as cookieParser from 'cookie-parser'
 import {
@@ -285,6 +284,60 @@ createConnection()
                     }
                     return res.status(200).send(token)
                 })
+
+                //비밀번호 찾기 
+                this.app.put('/forgetPassword', async (req: express.Request, res: express.Response) => {
+                    const nodemailer = require('nodemailer');
+                    const smtpPool = require('nodemailer-smtp-pool');
+                    const { email } = req.body
+                    const newPassword = Math.random().toString(36).substr(2, 11)
+
+                    const user = await getRepository(User.User).findOne(
+                        email
+                    )
+
+                    if (user) {
+                        createQueryBuilder()
+                            .update(User.User)
+                            .set({ password: hash(newPassword) })
+                            .where("email = :email", { email })
+                            .execute()
+                        const transporter = nodemailer.createTransport(smtpPool({
+                            service: "Gmail",
+                            host: 'localhost',
+                            tls: {
+                                rejectUnauthorize: false
+                            },
+                            auth: {
+                                user: '구글 이메일 입력',
+                                pass: '구글 비번'
+                            },
+                            maxConnections: 5,
+                            maxMessages: 10
+                        }))
+                        const mailOpt = {
+                            from: 'turn3361@gmail.com',
+                            to: email,
+                            subject: 'Travel Story 임시 비밀번호 입니다.',
+                            html: `<h2>Travel Story의 임시 비밀번호 입니다. ${newPassword}</h2>`
+                        }
+                        transporter.sendMail(mailOpt, function (err, res) {
+                            if (err) {
+                                console.error(err);
+                            } else {
+                                console.log('Message send :' + res);
+                            }
+                            // smtpTransport.close();
+                        });
+                        return res.sendStatus(201)
+                    }
+                    if (!user) {
+                        return res.sendStatus(404)
+                    }
+
+                })
+
+
             }
         }
 
