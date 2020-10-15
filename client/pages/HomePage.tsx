@@ -76,6 +76,13 @@ const Home = () => {
           {storeLogin ? <ul>
             <li
               onClick={() => {
+                router.push("/PostPage");
+              }}
+            >
+              새로운 글쓰기
+          </li>
+            <li
+              onClick={() => {
                 router.push("/LoginPage");
               }}
             >
