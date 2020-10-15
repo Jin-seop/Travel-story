@@ -12,7 +12,8 @@ import {
     createQueryBuilder,
 } from 'typeorm';
 import { User, Content, Image, Tag } from './entity';
-const secret = require('./config/jwt.json')
+const secret = require('./config/jwt.json');
+const password = require('./config/google.json');
 
 const hash = (password) => {
     return crypto.createHmac('sha256', secret.secret)
@@ -292,9 +293,9 @@ createConnection()
                     const { email } = req.body
                     const newPassword = Math.random().toString(36).substr(2, 11)
 
-                    const user = await getRepository(User.User).findOne(
+                    const user = await getRepository(User.User).findOne({
                         email
-                    )
+                    })
 
                     if (user) {
                         createQueryBuilder()
@@ -309,14 +310,14 @@ createConnection()
                                 rejectUnauthorize: false
                             },
                             auth: {
-                                user: '구글 이메일 입력',
-                                pass: '구글 비번'
+                                user: 'cocokiuuu1858@gmail.com',
+                                pass: password.password
                             },
                             maxConnections: 5,
                             maxMessages: 10
                         }))
                         const mailOpt = {
-                            from: 'turn3361@gmail.com',
+                            from: 'cocokiuuu1858@gmail.com',
                             to: email,
                             subject: 'Travel Story 임시 비밀번호 입니다.',
                             html: `<h2>Travel Story의 임시 비밀번호 입니다. ${newPassword}</h2>`
@@ -332,6 +333,7 @@ createConnection()
                         return res.sendStatus(201)
                     }
                     if (!user) {
+                        console.log(user);
                         return res.sendStatus(404)
                     }
 
