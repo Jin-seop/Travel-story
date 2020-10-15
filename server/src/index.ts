@@ -273,9 +273,9 @@ createConnection()
                 this.app.post('/googleLogin', async (req: express.Request, res: express.Response) => {
                     const { email, username } = req.body
                     const hashPassword = hash(email)
-                    const user = await getRepository(User.User).findOne(
+                    const user = await getRepository(User.User).find({
                         email
-                    )
+                    })
                     const AddUser = getRepository(User.User)
                         .create({ username, email, password: hashPassword })
                     const token = jwt.sign({ userId: email }, secret.secret, { expiresIn: '7d' })
@@ -310,7 +310,7 @@ createConnection()
                                 rejectUnauthorize: false
                             },
                             auth: {
-                                user: 'cocokiuuu1858@gmail.com',
+                                user: 'turn3361@gmail.com',
                                 pass: password.password
                             },
                             maxConnections: 5,
