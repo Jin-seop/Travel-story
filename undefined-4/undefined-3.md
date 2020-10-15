@@ -33,7 +33,7 @@ Cake successfully retrieved.
 {% endapi-method-response-example-description %}
 
 ```
-리다이렉트 : 메인페이
+리다이렉트 : 메인페이지 
 ```
 {% endapi-method-response-example %}
 
