@@ -12,6 +12,10 @@ Forget password
 {% api-method-spec %}
 {% api-method-request %}
 {% api-method-body-parameters %}
+{% api-method-parameter name="token" type="string" required=true %}
+
+{% endapi-method-parameter %}
+
 {% api-method-parameter name="email" type="string" required=true %}
 
 {% endapi-method-parameter %}
@@ -42,5 +46,5 @@ Could not find a cake matching this query.
 {% endapi-method-spec %}
 {% endapi-method %}
 
-> nodemail를 통해 임의의 비밀번호 전
+>
 
