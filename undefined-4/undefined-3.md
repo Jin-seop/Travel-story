@@ -11,18 +11,16 @@ This endpoint allows you to get free cakes.
 
 {% api-method-spec %}
 {% api-method-request %}
-{% api-method-headers %}
-{% api-method-parameter name="cookie" type="string" required=false %}
-
-{% endapi-method-parameter %}
-{% endapi-method-headers %}
-
 {% api-method-body-parameters %}
-{% api-method-parameter name="password" type="string" required=false %}
+{% api-method-parameter name="token" type="string" required=true %}
 
 {% endapi-method-parameter %}
 
-{% api-method-parameter name="email" type="string" required=false %}
+{% api-method-parameter name="password" type="string" required=true %}
+
+{% endapi-method-parameter %}
+
+{% api-method-parameter name="email" type="string" required=true %}
 
 {% endapi-method-parameter %}
 {% endapi-method-body-parameters %}

@@ -12,15 +12,15 @@ Sign up
 {% api-method-spec %}
 {% api-method-request %}
 {% api-method-body-parameters %}
-{% api-method-parameter name="username" type="string" required=false %}
+{% api-method-parameter name="username" type="string" required=true %}
 
 {% endapi-method-parameter %}
 
-{% api-method-parameter name="password" type="string" required=false %}
+{% api-method-parameter name="password" type="string" required=true %}
 
 {% endapi-method-parameter %}
 
-{% api-method-parameter name="email" type="string" required=false %}
+{% api-method-parameter name="email" type="string" required=true %}
 
 {% endapi-method-parameter %}
 {% endapi-method-body-parameters %}

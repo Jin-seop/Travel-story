@@ -12,11 +12,11 @@ Login
 {% api-method-spec %}
 {% api-method-request %}
 {% api-method-body-parameters %}
-{% api-method-parameter name="userId" type="string" required=false %}
+{% api-method-parameter name="userId" type="string" required=true %}
 
 {% endapi-method-parameter %}
 
-{% api-method-parameter name="password" type="string" required=false %}
+{% api-method-parameter name="password" type="string" required=true %}
 
 {% endapi-method-parameter %}
 {% endapi-method-body-parameters %}

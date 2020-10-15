@@ -11,22 +11,20 @@ DeletePost
 
 {% api-method-spec %}
 {% api-method-request %}
-{% api-method-headers %}
-{% api-method-parameter name="cookie" type="string" required=false %}
-
-{% endapi-method-parameter %}
-{% endapi-method-headers %}
-
 {% api-method-body-parameters %}
-{% api-method-parameter name="username" type="string" required=false %}
+{% api-method-parameter name="token" type="string" required=true %}
 
 {% endapi-method-parameter %}
 
-{% api-method-parameter name="title" type="string" required=false %}
+{% api-method-parameter name="username" type="string" required=true %}
 
 {% endapi-method-parameter %}
 
-{% api-method-parameter name="created\_at" type="string" required=false %}
+{% api-method-parameter name="title" type="string" required=true %}
+
+{% endapi-method-parameter %}
+
+{% api-method-parameter name="created\_at" type="string" required=true %}
 
 {% endapi-method-parameter %}
 {% endapi-method-body-parameters %}
