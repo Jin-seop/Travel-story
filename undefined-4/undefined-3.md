@@ -1,6 +1,6 @@
 # 회원정보 수정
 
-{% api-method method="put" host="https://api.cakes.com" path="/reviseUser" %}
+{% api-method method="put" host="https://api.cakes.com" path="/editUser" %}
 {% api-method-summary %}
 Revise User
 {% endapi-method-summary %}
