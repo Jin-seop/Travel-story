@@ -15,7 +15,6 @@ const router = useRouter();
   }
 
   const postContent = () => {
-    console.log(username)
     Axios.post("http://localhost:4000/addPost", {
       token : token,
       username : username,
