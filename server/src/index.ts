@@ -262,7 +262,7 @@ createConnection()
                             }
                             if (user) {
                                 const token = jwt.sign({ userId: user.email }, secret.secret, { expiresIn: '7d' })
-                                return res.status(200).send(token)
+                                return res.status(200).send({ user, token })
                             }
                         } catch (error) {
                             console.error(error);
@@ -276,14 +276,17 @@ createConnection()
                     const user = await getRepository(User.User).find({
                         email
                     })
-                    const AddUser = getRepository(User.User)
-                        .create({ username, email, password: hashPassword })
                     const token = jwt.sign({ userId: email }, secret.secret, { expiresIn: '7d' })
 
                     if (!user) {
+                        const AddUser = getRepository(User.User)
+                            .create({ username, email, password: hashPassword })
                         getRepository(User.User).save(AddUser)
                     }
-                    return res.status(200).send(token)
+                    const sendUser = await getRepository(User.User).find({
+                        email
+                    })
+                    return res.status(200).send({ token, sendUser })
                 })
 
                 //비밀번호 찾기 
@@ -296,7 +299,6 @@ createConnection()
                     const user = await getRepository(User.User).findOne({
                         email
                     })
-
                     if (user) {
                         createQueryBuilder()
                             .update(User.User)
@@ -317,7 +319,7 @@ createConnection()
                             maxMessages: 10
                         }))
                         const mailOpt = {
-                            from: 'cocokiuuu1858@gmail.com',
+                            from: 'turn3361@gmail.com',
                             to: email,
                             subject: 'Travel Story 임시 비밀번호 입니다.',
                             html: `<h2>Travel Story의 임시 비밀번호 입니다. ${newPassword}</h2>`
@@ -333,7 +335,6 @@ createConnection()
                         return res.sendStatus(201)
                     }
                     if (!user) {
-                        console.log(user);
                         return res.sendStatus(404)
                     }
 
