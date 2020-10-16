@@ -1,27 +1,58 @@
 import { useMemo } from 'react';
 import { createStore, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
+import { combineReducers } from 'redux';
+
+//액션
+export const LOGINCHECK = 'logincheck';
+export const LOGOUTCHECK = 'logoutcheck';
+export const USERINFO = 'USERINFO';
+
+//액션 생성 함수
+export const loginCheck = () => {
+	return {
+		type: LOGINCHECK
+	};
+};
+export const logoutClick = () => {
+	return {
+		type: LOGOUTCHECK
+	};
+};
+export const setUserInfo = (data) => {
+	return {
+    type: USERINFO,
+    data: data
+	};
+};
 
 let store
 
 //초기값
-const initialState = { isLogin: false };
+const initialState = { 
+  isLogin: false,
+  userName: null 
+ };
 
 //리듀서 함수
-const reducer = (state = initialState, action) => {
+const loginStatus = (state = initialState, action) => {
   switch (action.type) {
-    case 'logincheck': {
+    case LOGINCHECK: {
       return {
         ...state,
         isLogin: true
       }
     }
-    case 'logoutcheck': {
+    case LOGOUTCHECK: {
       return {
         ...state,
         isLogin: false
       }
     }
+    case USERINFO:
+			return {
+        userName: action.data
+				}
     default: {
       return state;
     }
@@ -31,7 +62,7 @@ const reducer = (state = initialState, action) => {
 //스토어 생성
 function initStore(preloadedState = initialState) {
   return createStore(
-    reducer,
+    loginStatus,
     preloadedState,
     composeWithDevTools(applyMiddleware())
   )
