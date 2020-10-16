@@ -1,12 +1,12 @@
 import { useMemo } from 'react';
 import { createStore, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import { combineReducers } from 'redux';
 
 //액션
 export const LOGINCHECK = 'logincheck';
 export const LOGOUTCHECK = 'logoutcheck';
 export const USERINFO = 'USERINFO';
+export const USEREMAIL = 'USEREMAIL';
 
 //액션 생성 함수
 export const loginCheck = () => {
@@ -31,7 +31,8 @@ let store
 //초기값
 const initialState = { 
   isLogin: false,
-  userName: null 
+  email: null,
+  userName: null,
  };
 
 //리듀서 함수
@@ -50,9 +51,11 @@ const loginStatus = (state = initialState, action) => {
       }
     }
     case USERINFO:
+      console.log(action)
 			return {
-        userName: action.data
-				}
+        userName: action.data.username,
+        email: action.data.email
+      }
     default: {
       return state;
     }

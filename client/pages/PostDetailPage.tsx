@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Header } from "../components/PostPage";
 import style from "./styles/PostDetailPage.module.scss";
-
+import {useSelector} from "react-redux";
 
 const PostDetailPage = () => {
   const router = useRouter();
@@ -12,6 +12,7 @@ const PostDetailPage = () => {
   const [image, setImage] = useState<Object>()
   const [title, setTitle] = useState<String>('')
   const [tag, setTag] = useState<Object>()
+  const username = useSelector((state) => state.userName);
 
   // 게시글 상세 정보를 불러오는 함수
   const postHandler = () => {
@@ -53,6 +54,8 @@ const PostDetailPage = () => {
         <div className={style.textContainer}>
 
           <form>
+           {userName === username ? (
+             <>
             <a
               onClick={() => {
                 router.push("/PostPage");
@@ -67,6 +70,11 @@ const PostDetailPage = () => {
             >
               삭제하기
           </a>
+          </>
+          )
+        :
+        ("")} 
+         
           </form>
           <div>
             <p>제목 : {title}</p>
