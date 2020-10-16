@@ -1,8 +1,18 @@
 import styles from "../../pages/styles/PostPage.module.scss";
 import { useRouter } from "next/router";
+import { useDispatch } from 'react-redux';
+import {logoutClick} from "../../modules/store/store"
 
 const Header = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
+
+  const logOutHandler = () => {
+    localStorage.clear()
+    dispatch(logoutClick());
+    router.push("/");
+  }
+
   return (
     <div className={styles.Header}>
       <img src="/TravelStoryicon.png" alt="logo" onClick={() => router.push("/")} />
@@ -24,7 +34,7 @@ const Header = () => {
           </li>
           <li
             onClick={() => {
-              router.push("/");
+              logOutHandler()
             }}
           >
             로그아웃
