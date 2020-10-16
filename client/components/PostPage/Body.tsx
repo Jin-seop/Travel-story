@@ -1,31 +1,54 @@
 import style from "../../pages/styles/PostPage.module.scss";
 import Axios from "axios";
-import {useState} from "react";
+import { useState } from "react";
 import { useSelector } from 'react-redux';
 import { useRouter } from "next/router";
 
 const Body = () => {
-const [title, setTitle] = useState("");
-const token = localStorage.getItem('token');
-const username = useSelector((state) => state.userName);
-const router = useRouter();
+  const [title, setTitle] = useState("");
+  const [newTag, setNewTag] = useState("");
+  const [newTags, setNewTags] = useState([]);
+  const token = localStorage.getItem('token');
+  const username = useSelector((state) => state.userName);
+  const router = useRouter();
 
+  //태그 추가
   const handleTitle = (e) => {
     setTitle(e.target.value);
   }
+  const handleNewTag = (e) => {
+    setNewTag(e.target.value);
+    e.target.value = "";
+  }
 
+  const handleNewTags = (e) => {
+    if (e.key === "Enter") {
+      setNewTags(() => {
+        newTags.push(newTag);
+        return newTags;
+      });
+      setNewTag("");
+    }
+  }
+
+  //태그 삭제
+  const handleTagList = (index) => {
+    setNewTags(newTags.filter((x, i) => index !== i));
+  };
+
+  //새로운 글 작성
   const postContent = () => {
     Axios.post("http://localhost:4000/addPost", {
-      token : token,
-      username : username,
+      token: token,
+      username: username,
       title: title
     })
-    .then(res => {
-      alert('글 작성이 완료되었습니다')
-      router.push('/');
-    })
-    .catch(err => console.log(err))
-  } 
+      .then(res => {
+        alert('글 작성이 완료되었습니다')
+        router.push('/');
+      })
+      .catch(err => console.log(err))
+  }
 
   return (
     <div className={style.postDetilBodyContainer}>
@@ -35,12 +58,31 @@ const router = useRouter();
       />
       <p>사진을 클릭하시면 추가할 수 있습니다.</p>
       <form>
-        <input placeholder="제목" onChange={handleTitle}/>
-        <input placeholder="태그" />
+        <input
+          placeholder="제목을 입력해주세요"
+          type="text"
+          onChange={handleTitle} />
+        <input
+          placeholder="태그 입력 후 'Enter'를 쳐주세요"
+          type="text"
+          value={newTag}
+          onChange={handleNewTag}
+          onKeyPress={handleNewTags} />
       </form>
       <ul>
-        <li>태그</li>
-        <li>태그</li>
+        <div>추가된 태그 : </div>
+        {newTags.map((list, index) => list === '' ?
+          ('')
+          : (
+            <li key={index}>
+              <button
+                onClick={() => {
+                  handleTagList(index);
+                }}
+              >{`#${list} `}</button>
+            </li>
+          )
+        )}
       </ul>
       <button onClick={postContent}>글 작성하기</button>
     </div>
@@ -48,3 +90,4 @@ const router = useRouter();
 };
 
 export default Body;
+
