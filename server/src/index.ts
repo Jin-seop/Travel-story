@@ -237,7 +237,7 @@ createConnection()
                             const addUser = await getRepository(
                                 User.User
                             )
-                                .create({ username, email, password: hashPassword });
+                                .create({ username, email, password: hashPassword })
                             const result = await getRepository(User.User)
                                 .save(addUser).then(result => res.sendStatus(201))
                                 .catch((err) => res.sendStatus(404));
@@ -360,6 +360,33 @@ createConnection()
                         return res.sendStatus(404)
                     }
                 })
+
+
+                //채팅 구현
+                const io_s = require('socket.io')(5000);
+                const redisAdapter = require('socket.io-redis');
+                io_s.adapter(redisAdapter({ host: 'localhost', port: 6379 }));
+
+                const io = io_s.of('mynamespace');
+                io.on('connection', (socket) => {
+
+                    socket.on('message-all', (data) => {
+                        io.emit('message-all', data);
+                    });
+
+                    socket.on('join', (room) => {
+                        socket.join(room);
+                        io.emit('message-all', "Socket " + socket.id + " joined to room " + room);
+                    });
+
+                    socket.on('message-room', (data) => {
+                        const room = data.room;
+                        const message = data.message;
+                        io.to(room).emit('message-room', data);
+                    });
+
+
+                });
 
             }
         }

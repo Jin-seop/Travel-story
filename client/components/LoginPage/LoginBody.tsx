@@ -5,9 +5,9 @@ import { useState } from "react";
 import GoogleLogin from 'react-google-login';
 import googleClient from '../../pages/config/google.json'
 import style from "../../pages/styles/LoginPage.module.scss";
-import { useDispatch  } from 'react-redux';
+import { useDispatch } from 'react-redux';
 // import {loginCheck} from "../../modules/store/store"
-import {loginCheck, setUserInfo } from "../../modules/store/store"
+import { loginCheck, setUserInfo } from "../../modules/store/store"
 
 const LoginBody = () => {
   const [email, setEmail] = useState('')
@@ -27,6 +27,7 @@ const LoginBody = () => {
       email,
       password
     }).then(res => {
+      console.log(res)
       if (res.status === 200) {
         localStorage.setItem('token', res.data.token);
         dispatch(setUserInfo(res.data.user));

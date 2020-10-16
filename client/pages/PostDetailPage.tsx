@@ -5,7 +5,10 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Header } from "../components/PostPage";
 import style from "./styles/PostDetailPage.module.scss";
-import {useSelector} from "react-redux";
+import { useSelector } from "react-redux";
+import io from 'socket.io-client'
+
+
 
 const PostDetailPage = () => {
   const router = useRouter();
@@ -34,31 +37,45 @@ const PostDetailPage = () => {
 
   // 태그를 불러오는 함수
   const tagHandler = () => {
-    let result = []
-    for (let key in tag) {
-      result.push([tag[key].id, tag[key].tagName])
+    if (tag) {
+      let result = []
+      for (let key in tag) {
+        result.push([tag[key].id, tag[key].tagName])
+      }
+      return result.map(tag => {
+        return (
+          <li key={tag[0]}>{tag[1]}</li>
+        )
+      })
     }
-    return result.map(tag => {
-      return (
-        <li key={tag[0]}>{tag[1]}</li>
-      )
-    })
   }
 
   //게시글을 삭제하는 함수
   const deleteContent = () => {
     Axios.post("http://localhost:4000/post", {
       title: title,
-      created_at : created
+      created_at: created
     })
-    .then(res => {
-      console.log(res)
-      router.push("/");
-    })
-    .catch(err => {console.log(err)})
+      .then(res => {
+        console.log(res)
+        router.push("/");
+      })
+      .catch(err => { console.log(err) })
   }
 
   useEffect(() => postHandler(), [router.query.id])
+  //채팅 하는 함수
+
+  const chatHandler = () => {
+
+    var socket = io('http://localhost:4000', {
+      path: '/socket.io', // 서버 사이드의 path 설정과 동일해야 한다
+      transports: ['websocket'] // websocket만을 사용하도록 설정
+    });
+    socket.emit('message-all', '공지')
+  }
+
+  useEffect(() => postHandler(), [])
 
   return (
     <div>
@@ -71,25 +88,25 @@ const PostDetailPage = () => {
         <div className={style.textContainer}>
 
           <form>
-           {userName === username ? (
-             <>
-            <a
-              onClick={() => {
-                router.push("/PostPage");
-              }}
-            >
-              수정하기
+            {userName === username ? (
+              <>
+                <a
+                  onClick={() => {
+                    router.push("/PostPage");
+                  }}
+                >
+                  수정하기
           </a>
-            <a
-              onClick={deleteContent}
-            >
-              삭제하기
+                <a
+                  onClick={deleteContent}
+                >
+                  삭제하기
           </a>
-          </>
-          )
-        :
-        ("")} 
-         
+              </>
+            )
+              :
+              ("")}
+
           </form>
           <div>
             <p>제목 : {title}</p>
@@ -108,8 +125,12 @@ const PostDetailPage = () => {
 
         <div className={style.chatContainer}>
           <div className={style.chatArea} />
-          <form>
+          <form className={style.inputArea}>
             <input placeholder="대화를 입력해주세요" />
+            <button onClick={e => {
+              e.preventDefault()
+              chatHandler()
+            }} >Send</button>
           </form>
         </div>
       </div>
