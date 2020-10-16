@@ -175,7 +175,7 @@ createConnection()
 
                 //게시글 삭제  
                 this.app.post(
-                    '/post',
+                    '/postDelete',
                     async (req: express.Request, res: express.Response) => {
                         const user = await getRepository(User.User).find({
                             username: req.body.username,
@@ -203,21 +203,18 @@ createConnection()
                 this.app.post(
                     '/post',
                     async (req: express.Request, res: express.Response) => {
-                        try {
-                            const content = await getRepository(User.User)
-                                .createQueryBuilder('user')
-                                .leftJoinAndSelect('user.contents', 'content')
-                                .where('content.id like :id', {
-                                    id: `%${req.body.id}%`,
-                                })
-                                .leftJoinAndSelect('content.images', 'image')
-                                .leftJoinAndSelect('content.tags', 'tag')
 
-                                .getOne().then(result => res.status(200).send(result))
-                                .catch((err) => res.sendStatus(404));
-                        } catch (error) {
-                            console.error(error);
-                        }
+                        const content = await getRepository(User.User)
+                            .createQueryBuilder('user')
+                            .leftJoinAndSelect('user.contents', 'content')
+                            .where('content.id like :id', {
+                                id: `%${req.body.id}%`,
+                            })
+                            .leftJoinAndSelect('content.images', 'image')
+                            .leftJoinAndSelect('content.tags', 'tag')
+                            .getOne()
+                            .then(result => res.status(200).send(result))
+
                     }
                 );
 
@@ -363,30 +360,24 @@ createConnection()
 
 
                 //채팅 구현
-                const io_s = require('socket.io')(5000);
-                const redisAdapter = require('socket.io-redis');
-                io_s.adapter(redisAdapter({ host: 'localhost', port: 6379 }));
-
-                const io = io_s.of('mynamespace');
-                io.on('connection', (socket) => {
-
-                    socket.on('message-all', (data) => {
-                        io.emit('message-all', data);
+                const http = require('http');
+                const socketIO = require('socket.io')
+                const port = 5000;
+                const server = http.createServer(this.app)
+                const io = socketIO(server);
+                io.on('connection', socket => {
+                    socket.on('send message', (item) => {
+                        const msg = item.name + ' : ' + item.message;
+                        console.log(msg);
+                        io.emit('receive message', { name: item.name, message: item.message });
                     });
-
-                    socket.on('join', (room) => {
-                        socket.join(room);
-                        io.emit('message-all', "Socket " + socket.id + " joined to room " + room);
+                    socket.on('disconnect', function () {
+                        console.log('user disconnected: ', socket.id);
                     });
-
-                    socket.on('message-room', (data) => {
-                        const room = data.room;
-                        const message = data.message;
-                        io.to(room).emit('message-room', data);
-                    });
-
-
                 });
+
+                server.listen(port, () => console.log(`Listening on port ${port}`))
+
 
             }
         }

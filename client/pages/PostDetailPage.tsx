@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { Header } from "../components/PostPage";
 import style from "./styles/PostDetailPage.module.scss";
 import { useSelector } from "react-redux";
-import io from 'socket.io-client'
+import socketIOClient from 'socket.io-client'
 
 
 
@@ -24,7 +24,6 @@ const PostDetailPage = () => {
     Axios.post('http://localhost:4000/post', {
       id: router.query.id
     }).then(res => {
-      console.log(res);
       if (res.status === 200) {
         setUserName(res.data.username)
         setTitle(res.data.contents[0].title)
@@ -52,7 +51,7 @@ const PostDetailPage = () => {
 
   //게시글을 삭제하는 함수
   const deleteContent = () => {
-    Axios.post("http://localhost:4000/post", {
+    Axios.post("http://localhost:4000/postDelete", {
       title: title,
       created_at: created
     })
@@ -67,12 +66,8 @@ const PostDetailPage = () => {
   //채팅 하는 함수
 
   const chatHandler = () => {
-
-    var socket = io('http://localhost:4000', {
-      path: '/socket.io', // 서버 사이드의 path 설정과 동일해야 한다
-      transports: ['websocket'] // websocket만을 사용하도록 설정
-    });
-    socket.emit('message-all', '공지')
+    const socket = socketIOClient('localhost:5000');
+    socket.emit('send message', { name: 'user', message: '대화' });
   }
 
   useEffect(() => postHandler(), [])
