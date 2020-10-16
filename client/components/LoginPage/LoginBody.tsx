@@ -6,8 +6,8 @@ import GoogleLogin from 'react-google-login';
 import googleClient from '../../pages/config/google.json'
 import style from "../../pages/styles/LoginPage.module.scss";
 import { useDispatch  } from 'react-redux';
-import {loginCheck} from "../../modules/store/store"
-import {setUserInfo} from "../../modules/store/store"
+// import {loginCheck} from "../../modules/store/store"
+import {loginCheck, setUserInfo } from "../../modules/store/store"
 
 const LoginBody = () => {
   const [email, setEmail] = useState('')
@@ -28,10 +28,10 @@ const LoginBody = () => {
       password
     }).then(res => {
       if (res.status === 200) {
-        localStorage.setItem('token', res.data.token)
-        dispatch(setUserInfo(res.data.user.username))
-        dispatch(loginCheck())
-        alert('로그인 되었습니다.')
+        localStorage.setItem('token', res.data.token);
+        dispatch(setUserInfo(res.data.user));
+        dispatch(loginCheck());
+        alert('로그인 되었습니다.');
         return router.push({
           pathname: '/'
         })
@@ -39,7 +39,6 @@ const LoginBody = () => {
     })
       .catch(err => alert('입력이 잘 못되었습니다'))
   }
-
 
   // 구글 로그인 함수
   const responseGoogle = (user) => {
