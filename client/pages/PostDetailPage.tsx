@@ -1,3 +1,4 @@
+
 import Axios from "axios";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -12,6 +13,7 @@ const PostDetailPage = () => {
   const [image, setImage] = useState<Object>()
   const [title, setTitle] = useState<String>('')
   const [tag, setTag] = useState<Object>()
+  const [created, setCreated] = useState<String>('');
   const username = useSelector((state) => state.userName);
 
   // 게시글 상세 정보를 불러오는 함수
@@ -19,11 +21,13 @@ const PostDetailPage = () => {
     Axios.post('http://localhost:4000/post', {
       id: router.query.id
     }).then(res => {
+      console.log(res);
       if (res.status === 200) {
         setUserName(res.data.username)
         setTitle(res.data.contents[0].title)
         setImage(res.data.contents[0].images)
         setTag(res.data.contents[0].tags)
+        setCreated(res.data.contents[0].created_at);
       }
     })
   }
@@ -39,6 +43,19 @@ const PostDetailPage = () => {
         <li key={tag[0]}>{tag[1]}</li>
       )
     })
+  }
+
+  //게시글을 삭제하는 함수
+  const deleteContent = () => {
+    Axios.post("http://localhost:4000/post", {
+      title: title,
+      created_at : created
+    })
+    .then(res => {
+      console.log(res)
+      router.push("/");
+    })
+    .catch(err => {console.log(err)})
   }
 
   useEffect(() => postHandler(), [router.query.id])
@@ -64,9 +81,7 @@ const PostDetailPage = () => {
               수정하기
           </a>
             <a
-              onClick={() => {
-                router.push("/");
-              }}
+              onClick={deleteContent}
             >
               삭제하기
           </a>

@@ -174,7 +174,7 @@ createConnection()
                 );
 
                 //게시글 삭제  
-                this.app.delete(
+                this.app.post(
                     '/post',
                     async (req: express.Request, res: express.Response) => {
                         const user = await getRepository(User.User).find({
