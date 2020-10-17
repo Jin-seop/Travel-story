@@ -47,9 +47,9 @@ const LoginBody = () => {
       username: user.ot.Ad,
     }).then(res => {
       localStorage.setItem('token', res.data.token)
-      const data = { userName: user.ot.Ad, email: user.ot.Xt }
+      console.log(res.data.sendUser[0])
       if (res.status === 200) {
-        dispatch(setUserInfo(data))
+        dispatch(setUserInfo(res.data.sendUser[0]))
         dispatch(loginCheck())
         alert('로그인 되었습니다.')
         return router.push({
