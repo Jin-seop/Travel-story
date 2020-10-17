@@ -1,6 +1,6 @@
 import style from "../../pages/styles/PostPage.module.scss";
 import Axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from 'react-redux';
 import { useRouter } from "next/router";
 
@@ -8,10 +8,14 @@ const Body = () => {
   const [title, setTitle] = useState("");
   const [newTag, setNewTag] = useState("");
   const [newTags, setNewTags] = useState([]);
-  const token = localStorage.getItem('token');
-  const username = useSelector((state) => state.userName);
+  const [token, setToken] = useState('')
+  const username = useSelector((state) => {
+    state.userName
+    console.log(state)
+  });
   const router = useRouter();
 
+  console.log(username)
   //태그 추가
   const handleTitle = (e) => {
     setTitle(e.target.value);
@@ -42,7 +46,8 @@ const Body = () => {
       token: token,
       username: username,
       title: title,
-      tag: newTags
+      tagName: newTags,
+      imgName: '이미지'
     })
       .then(res => {
         alert('글 작성이 완료되었습니다')
@@ -50,6 +55,10 @@ const Body = () => {
       })
       .catch(err => console.log(err))
   }
+
+  useEffect(() => {
+    setToken(localStorage.getItem('token'))
+  }, [])
 
   return (
     <div className={style.postDetilBodyContainer}>

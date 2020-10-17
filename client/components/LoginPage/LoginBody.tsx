@@ -27,7 +27,6 @@ const LoginBody = () => {
       email,
       password
     }).then(res => {
-      console.log(res)
       if (res.status === 200) {
         localStorage.setItem('token', res.data.token);
         dispatch(setUserInfo(res.data.user));
@@ -47,10 +46,10 @@ const LoginBody = () => {
       email: user.ot.Xt,
       username: user.ot.Ad,
     }).then(res => {
-      console.log(res);
       localStorage.setItem('token', res.data)
+      const data = { userName: user.ot.Ad, email: user.ot.Xt }
       if (res.status === 200) {
-        dispatch(setUserInfo(res.data.sendUser[0].username))
+        dispatch(setUserInfo(data))
         dispatch(loginCheck())
         alert('로그인 되었습니다.')
         return router.push({

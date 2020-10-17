@@ -10,30 +10,30 @@ export const USEREMAIL = 'USEREMAIL';
 
 //액션 생성 함수
 export const loginCheck = () => {
-	return {
-		type: LOGINCHECK
-	};
+  return {
+    type: LOGINCHECK
+  };
 };
 export const logoutClick = () => {
-	return {
-		type: LOGOUTCHECK
-	};
+  return {
+    type: LOGOUTCHECK
+  };
 };
 export const setUserInfo = (data) => {
-	return {
+  return {
     type: USERINFO,
     data: data
-	};
+  };
 };
 
 let store
 
 //초기값
-const initialState = { 
+const initialState = {
   isLogin: false,
   email: null,
   userName: null,
- };
+};
 
 //리듀서 함수
 const loginStatus = (state = initialState, action) => {
@@ -51,7 +51,7 @@ const loginStatus = (state = initialState, action) => {
       }
     }
     case USERINFO:
-			return {
+      return {
         userName: action.data.username,
         email: action.data.email
       }

@@ -3,8 +3,8 @@ import Head from "next/head";
 import style from "./styles/Main.module.scss";
 import { useEffect, useState } from "react";
 import Axios from "axios";
-import { useSelector,useDispatch  } from 'react-redux';
-import {logoutClick, loginCheck} from "../modules/store/store"
+import { useSelector, useDispatch } from 'react-redux';
+import { logoutClick, loginCheck } from "../modules/store/store"
 
 const Home = () => {
   const [tagSerch, setTagSerch] = useState(false)

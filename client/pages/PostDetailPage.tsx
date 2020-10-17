@@ -1,4 +1,3 @@
-
 import Axios from "axios";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -24,12 +23,13 @@ const PostDetailPage = () => {
     Axios.post('http://localhost:4000/post', {
       id: router.query.id
     }).then(res => {
+      console.log(res)
       if (res.status === 200) {
-        setUserName(res.data.username)
-        setTitle(res.data.contents[0].title)
-        setImage(res.data.contents[0].images)
-        setTag(res.data.contents[0].tags)
-        setCreated(res.data.contents[0].created_at);
+        // setUserName(res.data.username)
+        // setTitle(res.data.contents[0].title)
+        // setImage(res.data.contents[0].images)
+        // setTag(res.data.contents[0].tags)
+        // setCreated(res.data.contents[0].created_at);
       }
     })
   }
@@ -62,7 +62,9 @@ const PostDetailPage = () => {
       .catch(err => { console.log(err) })
   }
 
-  useEffect(() => postHandler(), [router.query.id])
+  useEffect(() => {
+    postHandler()
+  }, [router.query.id])
   //채팅 하는 함수
 
   const chatHandler = () => {
