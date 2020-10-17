@@ -10,12 +10,10 @@ const Body = () => {
   const [newTags, setNewTags] = useState([]);
   const [token, setToken] = useState('')
   const username = useSelector((state) => {
-    state.userName
-    console.log(state)
+    return state.userName
   });
   const router = useRouter();
 
-  console.log(username)
   //태그 추가
   const handleTitle = (e) => {
     setTitle(e.target.value);

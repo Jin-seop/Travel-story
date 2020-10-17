@@ -51,6 +51,7 @@ const loginStatus = (state = initialState, action) => {
       }
     }
     case USERINFO:
+      console.log(action);
       return {
         userName: action.data.username,
         email: action.data.email
