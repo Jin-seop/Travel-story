@@ -46,7 +46,7 @@ const LoginBody = () => {
       email: user.ot.Xt,
       username: user.ot.Ad,
     }).then(res => {
-      localStorage.setItem('token', res.data)
+      localStorage.setItem('token', res.data.token)
       const data = { userName: user.ot.Ad, email: user.ot.Xt }
       if (res.status === 200) {
         dispatch(setUserInfo(data))
