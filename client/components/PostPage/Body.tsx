@@ -41,7 +41,8 @@ const Body = () => {
     Axios.post("http://localhost:4000/addPost", {
       token: token,
       username: username,
-      title: title
+      title: title,
+      tag: newTags
     })
       .then(res => {
         alert('글 작성이 완료되었습니다')
@@ -75,7 +76,7 @@ const Body = () => {
           ('')
           : (
             <li key={index}>
-              <button
+              <button className="tagBtn"
                 onClick={() => {
                   handleTagList(index);
                 }}
