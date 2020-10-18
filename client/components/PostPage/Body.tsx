@@ -8,7 +8,8 @@ const Body = () => {
   const [title, setTitle] = useState("");
   const [newTag, setNewTag] = useState("");
   const [newTags, setNewTags] = useState([]);
-  const [token, setToken] = useState('')
+  const [token, setToken] = useState("")
+  const [img, setImg] = useState("");
   const username = useSelector((state) => {
     return state.userName
   });
@@ -45,7 +46,7 @@ const Body = () => {
       username: username,
       title: title,
       tagName: newTags,
-      imgName: '이미지'
+      imgName: img
     })
       .then(res => {
         alert('글 작성이 완료되었습니다')
@@ -53,6 +54,11 @@ const Body = () => {
       })
       .catch(err => console.log(err))
   }
+
+  const handleImg = (e) => {
+    setImg(e.target.files[0]);
+  }
+  console.log(img);
 
   useEffect(() => {
     setToken(localStorage.getItem('token'))
@@ -65,6 +71,7 @@ const Body = () => {
         alt="#"
       />
       <p>사진을 클릭하시면 추가할 수 있습니다.</p>
+      <input type="file" onChange={handleImg}></input>
       <form>
         <input
           placeholder="제목을 입력해주세요"
