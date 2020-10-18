@@ -10,8 +10,11 @@ const Home = () => {
   const [tagSerch, setTagSerch] = useState(false)
   const [data, setData] = useState([])
   const [isLogin, setIsLogin] = useState('')
+  const [myContent, setMyCotetnt] = useState([]);
+  const [isMyContetn, setIsMyContent] = useState(false);
   const router = useRouter();
   const dispatch = useDispatch();
+  const username = useSelector((stat) => stat.userName);
   const storeLogin = useSelector((state) => state.isLogin);
   console.log(storeLogin);
 
@@ -19,9 +22,11 @@ const Home = () => {
   const newPostHandler = () => {
     Axios.get('http://localhost:4000/NewPost')
       .then(res => {
-        setData(res.data)
+        console.log(res);
+        setData(res.data);
         setIsLogin(storeLogin);
       })
+      .catch(err => {console.log(err)});
   }
   // 최신글을 화면에 뿌려주는 함수
   const newPostRenderHandler = () => {
@@ -30,7 +35,7 @@ const Home = () => {
         <li
           onClick={() => {
             if (!isLogin) {
-              return alert('로그인을 해주세요')
+              return alert('로그인을 해주세요');
             }
             router.push({ pathname: '/PostDetailPage', query: { id: post.id, title: post.title, created_at: post.create_time } });
           }}
@@ -49,6 +54,19 @@ const Home = () => {
         </li>
       )
     })
+  }
+
+  //내글보기 함수
+  const handleMyContent = () => {
+    Axios.post('http://localhost:4000/??', {
+      userName: username
+    })
+    .then(res => {
+      console.log(res);
+      setMyCotetnt(res.data);
+      setIsMyContent(true);
+    })
+    .catch(err => {console.log(err)});
   }
 
   // 로그아웃 함수
@@ -80,14 +98,18 @@ const Home = () => {
               }}
             >
               새로운 글쓰기
-          </li>
-            <li
-              onClick={() => {
-                router.push("/LoginPage");
-              }}
-            >
+            </li>
+            { !isMyContetn ?
+            <li onClick={handleMyContent}>
               내 글 보기
-          </li>
+            </li>
+            :
+            <li  onClick={() => {
+                setIsMyContent(false);
+              }} >
+             전체 글 보기
+            </li> }
+
             <li
               onClick={() => {
                 router.push("/SignUpPage");
@@ -144,8 +166,7 @@ const Home = () => {
           </div>
         </div>
         <div className={style.bodyContentContainer}>
-          <ul>
-            {data.length !== 0 ? newPostRenderHandler() : null}
+          <ul>{isMyContetn ? ('내 글만 랜더링!') :  <>{data.length !== 0 ? newPostRenderHandler() : null}</>}
           </ul>
         </div>
       </div>
