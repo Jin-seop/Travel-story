@@ -82,12 +82,9 @@ const Body = () => {
         {newTags.map((list, index) => list === '' ?
           ('')
           : (
-            <li key={index}>
-              <button className="tagBtn"
-                onClick={() => {
-                  handleTagList(index);
-                }}
-              >{`#${list} `}</button>
+            <li key={index} onClick={() => {
+              handleTagList(index);
+            }}>{`#${list} `}
             </li>
           )
         )}
