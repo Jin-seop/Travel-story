@@ -341,9 +341,8 @@ createConnection()
                 this.app.put('/editUser', async (req: express.Request, res: express.Response) => {
                     const { token, email, password } = req.body
                     const user = await getRepository(User.User).findOne(
-                        email
-                    )
-
+                        {email}
+                        )
                     if (user) {
                         createQueryBuilder()
                             .update(User.User)
@@ -374,6 +373,7 @@ createConnection()
                         console.log('user disconnected: ', socket.id);
                     });
                 });
+
 
                 //내 글 가져오기
                 this.app.post(
