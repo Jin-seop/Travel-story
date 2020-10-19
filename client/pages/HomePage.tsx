@@ -112,7 +112,7 @@ const Home = () => {
 
             <li
               onClick={() => {
-                router.push("/SignUpPage");
+                router.push("/Mypage");
               }}
             >
               정보수정
