@@ -22,12 +22,13 @@ const Home = () => {
   const newPostHandler = () => {
     Axios.get('http://localhost:4000/NewPost')
       .then(res => {
+        console.log(res.data)
         setData(res.data);
         setIsLogin(storeLogin);
       })
       .catch(err => {console.log(err)});
   }
-  // 최신글을 화면에 뿌려주는 함수
+  // 최신글을 화면에 랜더링 하는 함수
   const newPostRenderHandler = () => {
     return data.map((post: any, index: number) => {
       return (
@@ -55,7 +56,7 @@ const Home = () => {
     })
   }
 
-  //내글보기 함수
+  //내가 쓴 글 불러오는 함수
   const handleMyContent = () => {
     Axios.post('http://localhost:4000/myPost', {
       username: username
@@ -66,6 +67,34 @@ const Home = () => {
       setIsMyContent(true);
     })
     .catch(err => {console.log(err)});
+  }
+
+  // 내가 쓴 글 화면에 랜더링 하는 함수
+  const myCotentRenderHandler = () => {
+    return myContent.map((post: any, index: number) => {
+      return (
+        <li
+          onClick={() => {
+            if (!isLogin) {
+              return alert('로그인을 해주세요');
+            }
+            router.push({ pathname: '/PostDetailPage', query: { id: post.id, title: post.title, created_at: post.create_time } });
+          }}
+          key={post.id}
+        >
+          <div className={style.contentContainer}>
+            {/* <img
+              src={post.images.length !== 0 ? post.images[0] : null}
+              alt="#"
+            /> */}
+            <div className={style.writeContainer}>
+              <p>{post.title}</p>
+            </div>
+            <p>채팅인원: %%</p>
+          </div>
+        </li>
+      )
+    })
   }
 
   // 로그아웃 함수
@@ -165,7 +194,7 @@ const Home = () => {
           </div>
         </div>
         <div className={style.bodyContentContainer}>
-          <ul>{isMyContetn ? ('내 글만 랜더링!') :  <>{data.length !== 0 ? newPostRenderHandler() : null}</>}
+          <ul>{isMyContetn ? <>{myContent.length !== 0 ? myCotentRenderHandler() : null}</> :  <>{data.length !== 0 ? newPostRenderHandler() : null}</>}
           </ul>
         </div>
       </div>
