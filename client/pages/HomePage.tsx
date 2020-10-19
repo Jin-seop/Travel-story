@@ -22,7 +22,6 @@ const Home = () => {
   const newPostHandler = () => {
     Axios.get('http://localhost:4000/NewPost')
       .then(res => {
-        console.log(res.data)
         setData(res.data);
         setIsLogin(storeLogin);
       })
@@ -62,7 +61,6 @@ const Home = () => {
       username: username
     })
     .then(res => {
-      console.log('my', res);
       setMyCotetnt(res.data);
       setIsMyContent(true);
     })

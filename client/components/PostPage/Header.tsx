@@ -27,7 +27,7 @@ const Header = () => {
           </li>
           <li
             onClick={() => {
-              router.push("/SignUpPage");
+              router.push("/Mypage");
             }}
           >
             마이페이지
