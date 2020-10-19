@@ -23,16 +23,17 @@ const PostDetailPage = () => {
     Axios.post('http://localhost:4000/post', {
       id: router.query.id
     }).then(res => {
-      console.log(res)
       if (res.status === 200) {
-        // setUserName(res.data.username)
-        // setTitle(res.data.contents[0].title)
-        // setImage(res.data.contents[0].images)
-        // setTag(res.data.contents[0].tags)
-        // setCreated(res.data.contents[0].created_at);
+        setUserName(res.data.username)
+        setTitle(res.data.contents[0].title)
+        setImage(res.data.contents[0].images)
+        setTag(res.data.contents[0].tags)
+        setCreated(res.data.contents[0].created_at);
       }
     })
   }
+
+  //게시글 수정하는 함수
 
   // 태그를 불러오는 함수
   const tagHandler = () => {
@@ -89,7 +90,7 @@ const PostDetailPage = () => {
               <>
                 <a
                   onClick={() => {
-                    router.push("/PostPage");
+                    router.push("/EditContentPage");
                   }}
                 >
                   수정하기
