@@ -1,8 +1,8 @@
-import { useRouter } from "next/router";
 import Head from "next/head";
 import style from "./styles/Main.module.scss";
-import { useEffect, useState } from "react";
 import Axios from "axios";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import { useSelector, useDispatch } from 'react-redux';
 import { logoutClick, loginCheck } from "../modules/store/store"
 
@@ -81,10 +81,10 @@ const Home = () => {
           key={post.id}
         >
           <div className={style.contentContainer}>
-            {/* <img
+            <img
               src={post.images.length !== 0 ? post.images[0] : null}
               alt="#"
-            /> */}
+            />
             <div className={style.writeContainer}>
               <p>{post.title}</p>
             </div>
@@ -192,7 +192,7 @@ const Home = () => {
           </div>
         </div>
         <div className={style.bodyContentContainer}>
-          <ul>{isMyContetn ? <>{myContent.length !== 0 ? myCotentRenderHandler() : null}</> :  <>{data.length !== 0 ? newPostRenderHandler() : null}</>}
+          <ul>{isMyContetn ? <>{myContent.length !== 0 ? myCotentRenderHandler() : <h1>작성한 글이 없습니다!</h1>}</> :  <>{data.length !== 0 ? newPostRenderHandler() : null}</>}
           </ul>
         </div>
       </div>
