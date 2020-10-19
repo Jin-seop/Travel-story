@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import style from "../../pages/styles/LoginPage.module.scss";
 import Axios from "axios";
 import {useSelector} from "react-redux";
@@ -8,7 +8,27 @@ const MypageBody = () => {
   const route = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [token, setToken] = useState("")
   const username = useSelector((state) => state.userName);
+
+  const handleMyInfo = (e) => {
+    e.preventDefault();
+    Axios.put("http://localhost:4000/editUser", {
+      token: token,
+      password: password,
+      email: email
+    })
+    .then((res) => {
+      console.log(res);
+      alert('수정이 완료되었습니다')
+      route.push('/')
+    })
+    .catch((err) => {console.log(err)})
+  }
+
+  useEffect(() => {
+    setToken(localStorage.getItem('token'))
+  }, [])
 
   return(
     <div className={style.LoginBodyContainer}>
@@ -23,7 +43,7 @@ const MypageBody = () => {
           e.preventDefault()
           setPassword(e.target.value)
         }} />
-        <button >정보 수정</button>
+        <button onClick={handleMyInfo}>정보 수정</button>
       </form>
     </div>
   </div>
