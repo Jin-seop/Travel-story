@@ -375,6 +375,22 @@ createConnection()
                     });
                 });
 
+                //내 글 가져오기
+                this.app.get(
+                    '/myPost',
+                    async (req: express.Request, res: express.Response) => {
+                        const { username } = req.body
+                        const content = await getRepository(Content.Content)
+                            .createQueryBuilder('content')
+                            .leftJoinAndSelect('content.user', 'user')
+                            .where('user.username = :username',{ username })
+                            .orderBy('created_at','DESC')
+                            .getMany()
+                            .then((result) => res.status(200).send(result))
+                            .catch((err) => console.log(err));
+                    }
+                );
+
                 server.listen(port, () => console.log(`Listening on port ${port}`))
 
 
