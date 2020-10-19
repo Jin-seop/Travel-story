@@ -376,7 +376,7 @@ createConnection()
                 });
 
                 //내 글 가져오기
-                this.app.get(
+                this.app.post(
                     '/myPost',
                     async (req: express.Request, res: express.Response) => {
                         const { username } = req.body
