@@ -22,7 +22,6 @@ const Home = () => {
   const newPostHandler = () => {
     Axios.get('http://localhost:4000/NewPost')
       .then(res => {
-        console.log(res);
         setData(res.data);
         setIsLogin(storeLogin);
       })
@@ -58,11 +57,11 @@ const Home = () => {
 
   //내글보기 함수
   const handleMyContent = () => {
-    Axios.post('http://localhost:4000/??', {
-      userName: username
+    Axios.post('http://localhost:4000/myPost', {
+      username: username
     })
     .then(res => {
-      console.log(res);
+      console.log('my', res);
       setMyCotetnt(res.data);
       setIsMyContent(true);
     })
