@@ -8,7 +8,6 @@ const EditContent = () => {
   const [title, setTitle] = useState("");
   const [newTag, setNewTag] = useState("");
   const [newTags, setNewTags] = useState([]);
-  const [token, setToken] = useState("")
   const [img, setImg] = useState("");
   const [oriTitle, setOriTitle] = useState("")
   const [oriTags, setOriTags] = useState(null)
@@ -16,7 +15,6 @@ const EditContent = () => {
   const [isLogin, setIsLogin] = useState('');
   const storeLogin = useSelector((state) => state.isLogin);
   const contentId = window.location.href.slice(38);
-  const username = useSelector((stat) => stat.userName);
 
   //해당 글 가져오기
   const onePostDetailHandle = () => {
@@ -27,7 +25,6 @@ const EditContent = () => {
         setOriTags(res.data.tags);
         setOriTitle(res.data.title)
         setIsLogin(storeLogin);
-        setToken(localStorage.getItem('token'));
       })
       .catch(err => {console.log(err)});
   }
@@ -59,14 +56,15 @@ const EditContent = () => {
   //게시글 수정
   const editContent = () => {
     Axios.put("http://localhost:4000/post", {
-      token: token,
-      username:  username,
+      id: contentId,
       title: title,
-      tag: newTags,
+      // imgName:'',
+      // tagName:'',
     })
       .then(res => {
-        alert('글 수정이 완료되었습니다')
+        alert('글 수정이 완료되었습니다.')
         router.push('/');
+        // router.push(`/PostDetailPage?id=/${contentId}`);
       })
       .catch(err => console.log(err))
   }
