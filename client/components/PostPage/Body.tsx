@@ -49,7 +49,7 @@ const Body = () => {
       imgName: img
     })
       .then(res => {
-        alert('글 작성이 완료되었습니다')
+        alert('글 작성이 완료되었습니다.')
         router.push('/');
       })
       .catch(err => console.log(err))
@@ -58,7 +58,6 @@ const Body = () => {
   const handleImg = (e) => {
     setImg(e.target.files[0]);
   }
-  console.log(img);
 
   useEffect(() => {
     setToken(localStorage.getItem('token'))

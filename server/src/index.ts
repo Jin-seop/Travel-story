@@ -206,8 +206,8 @@ createConnection()
                             .where(
                                 "id = :id", { id: req.body.id }
                             )
-                            .execute().then(result => console.log(result))
-                            .catch(err => console.error(err))
+                            .execute().then(result => res.sendStatus(200))
+                            .catch(err => res.sendStatus(404))
                     }
                 );
 
