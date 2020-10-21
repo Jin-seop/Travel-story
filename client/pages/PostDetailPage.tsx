@@ -16,6 +16,7 @@ const PostDetailPage = () => {
   const [title, setTitle] = useState<String>('')
   const [tag, setTag] = useState<Object>()
   const [created, setCreated] = useState<String>('');
+  const [id, setId] = useState<String>('');
   const username = useSelector((state) => state.userName);
 
   // 게시글 상세 정보를 불러오는 함수
@@ -24,11 +25,12 @@ const PostDetailPage = () => {
       id: router.query.id
     }).then(res => {
       if (res.status === 200) {
-        setUserName(res.data.username)
-        setTitle(res.data.contents[0].title)
-        setImage(res.data.contents[0].images)
-        setTag(res.data.contents[0].tags)
-        setCreated(res.data.contents[0].created_at);
+        setId(res.data.id);
+        setUserName(res.data.username);
+        setTitle(res.data.contents[0].title);
+        setImage(res.data.contents[0].images);
+        setTag(res.data.contents[0].tags);
+        setCreated(`${res.data.contents[0].created_at.substring(0, 10)} ${res.data.contents[0].created_at.substring(11, 19)}`);
       }
     })
   }
@@ -53,8 +55,9 @@ const PostDetailPage = () => {
   //게시글을 삭제하는 함수
   const deleteContent = () => {
     Axios.post("http://localhost:4000/postDelete", {
-      title: title,
-      created_at: created
+      username: username,
+      created_at: created,
+      title: title
     })
       .then(res => {
         console.log(res)
@@ -73,7 +76,7 @@ const PostDetailPage = () => {
     socket.emit('send message', { name: 'user', message: '대화' });
   }
 
-  useEffect(() => postHandler(), [])
+  useEffect(() => postHandler(), []);
 
   return (
     <div>
@@ -90,7 +93,7 @@ const PostDetailPage = () => {
               <>
                 <a
                   onClick={() => {
-                    router.push("/EditContentPage");
+                    router.push(`/EditContentPage/${id}`);
                   }}
                 >
                   수정하기

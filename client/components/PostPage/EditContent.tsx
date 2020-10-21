@@ -14,6 +14,20 @@ const EditContent = () => {
     return state.userName
   });
   const router = useRouter();
+  const [data, setData] = useState([])
+  const [isLogin, setIsLogin] = useState('')
+  const storeLogin = useSelector((state) => state.isLogin);
+  console.log(storeLogin);
+  console.log(data);
+
+  const newPostHandler = () => {
+    Axios.get('http://localhost:4000/NewPost')
+      .then(res => {
+        setData(res.data);
+        setIsLogin(storeLogin);
+      })
+      .catch(err => {console.log(err)});
+  }
 
   //태그 추가
   const handleTitle = (e) => {
@@ -59,6 +73,7 @@ const EditContent = () => {
     setImg(e.target.files[0]);
   }
 
+  useEffect(newPostHandler, [])
   useEffect(() => {
     setToken(localStorage.getItem('token'))
   }, [])
