@@ -1,7 +1,10 @@
-import EditContent from "../../components/PostPage/EditContent"
+import { Header, EditContent } from "../../components/PostPage";
 
 export default function id() {
   return (
-    <EditContent/>
+    <>
+      <Header />
+      <EditContent />
+    </>
   )
 }
