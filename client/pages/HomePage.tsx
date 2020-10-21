@@ -36,7 +36,7 @@ const Home = () => {
             if (!isLogin) {
               return alert('로그인을 해주세요');
             }
-            router.push({ pathname: '/PostDetailPage', query: { id: post.id, title: post.title, created_at: post.create_time } });
+            router.push({ pathname: '/PostDetailPage', query: { id: post.id} });
           }}
           key={post.id}
         >
