@@ -6,7 +6,6 @@ import GoogleLogin from 'react-google-login';
 import googleClient from '../../pages/config/google.json'
 import style from "../../pages/styles/LoginPage.module.scss";
 import { useDispatch } from 'react-redux';
-// import {loginCheck} from "../../modules/store/store"
 import { loginCheck, setUserInfo } from "../../modules/store/store"
 
 const LoginBody = () => {

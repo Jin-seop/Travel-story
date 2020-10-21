@@ -7,8 +7,6 @@ import style from "./styles/PostDetailPage.module.scss";
 import { useSelector } from "react-redux";
 import socketIOClient from 'socket.io-client'
 
-
-
 const PostDetailPage = () => {
   const router = useRouter();
   const [userName, setUserName] = useState<String>('')
@@ -16,7 +14,7 @@ const PostDetailPage = () => {
   const [title, setTitle] = useState<String>('')
   const [tag, setTag] = useState<Object>()
   const [created, setCreated] = useState<String>('');
-  const [id, setId] = useState<String>('');
+  const [contentId, setContentId] = useState<String>('');
   const username = useSelector((state) => state.userName);
 
   // 게시글 상세 정보를 불러오는 함수
@@ -25,7 +23,7 @@ const PostDetailPage = () => {
       id: router.query.id
     }).then(res => {
       if (res.status === 200) {
-        setId(res.data.id);
+        setContentId(window.location.href.slice(40));
         setUserName(res.data.username);
         setTitle(res.data.contents[0].title);
         setImage(res.data.contents[0].images);
@@ -93,7 +91,7 @@ const PostDetailPage = () => {
               <>
                 <a
                   onClick={() => {
-                    router.push(`/EditContentPage/${id}`);
+                    router.push(`/EditContentPage/${contentId}`);
                   }}
                 >
                   수정하기
