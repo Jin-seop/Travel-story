@@ -12,7 +12,6 @@ import {
     createQueryBuilder,
 } from 'typeorm';
 import { User, Content, Image, Tag } from './entity';
-import { Console } from 'console';
 const secret = require('./config/jwt.json');
 const password = require('./config/google.json');
 
@@ -139,38 +138,60 @@ createConnection()
                 this.app.put(
                     '/post',
                     async (req: express.Request, res: express.Response) => {
-                        const user = await getRepository(User.User).find({
-                            username: req.body.username,
-                        });
-                        const content = await getRepository(
-                            Content.Content
-                        ).findOne({
-                            title: req.body.title,
-                            created_at: req.body.created_at,
-                        });
+
                         await getConnection()
                             .createQueryBuilder()
                             .update(Content.Content)
                             .set({ title: req.body.title })
                             .where(
-                                `content.created_at = '${req.body.created_at}'`,
-                                { user }
+                                "id = :id", { id: req.body.id }
                             )
-                            .execute();
-                        await getConnection()
-                            .createQueryBuilder()
-                            .update(Image.Image)
-                            .set({ imgName: req.body.imgName })
-                            .where(`content.id = ${content.id}`)
-                            .execute();
-                        await getConnection()
-                            .createQueryBuilder()
-                            .update(Tag.Tag)
-                            .set({ tagName: req.body.tagName })
-                            .where(`content.id = ${content.id}`)
                             .execute()
-                            .catch((err) => res.sendStatus(404));
-                        return res.sendStatus(201);
+                            .catch(err => console.log(err))
+
+                        await getRepository(Content.Content)
+                            .createQueryBuilder('content')
+                            .whereInIds(req.body.id)
+                            .leftJoinAndSelect('content.images', 'image')
+                            .leftJoinAndSelect('content.tags', 'tag')
+                            .getOne()
+                            .then(result => {
+                                if (result.images.length === 0) {
+                                    const imageRepository = getRepository(
+                                        Image.Image
+                                    );
+                                    const image = imageRepository.create();
+                                    image.imgName = req.body.imgName;
+                                    image.content = req.body.id;
+                                    imageRepository.save(image);
+                                }
+                                if (result.tags.length === 0) {
+                                    const tagRepository = getRepository(Tag.Tag);
+                                    const tag = tagRepository.create();
+                                    tag.tagName = req.body.imgName;
+                                    tag.content = req.body.id;
+                                    tagRepository.save(tag);
+                                }
+                                if (result.images.length !== 0 && result.tags.length !== 0) {
+                                    getConnection()
+                                        .createQueryBuilder()
+                                        .update(Image.Image)
+                                        .set({ imgName: req.body.imgName })
+                                        .where(`content.id = ${req.body.id}`)
+                                        .execute()
+                                        .catch(err => console.log(err))
+                                    getConnection()
+                                        .createQueryBuilder()
+                                        .update(Tag.Tag)
+                                        .set({ tagName: req.body.tagName })
+                                        .where(`content.id = ${req.body.id}`)
+                                        .execute()
+                                        .catch(err => console.log(err))
+                                }
+                                return res.sendStatus(200)
+                            })
+
+
                     }
                 );
 
