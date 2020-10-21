@@ -69,14 +69,14 @@ const Home = () => {
 
   // 내가 쓴 글 화면에 랜더링 하는 함수
   const myCotentRenderHandler = () => {
-    return myContent.map((post: any, index: number) => {
+    return myContent.map((post) => {
       return (
         <li
           onClick={() => {
             if (!isLogin) {
               return alert('로그인을 해주세요');
             }
-            router.push({ pathname: '/PostDetailPage', query: { id: post.id, title: post.title, created_at: post.create_time } });
+            router.push(`/PostDetailPage/${post.id}`);
           }}
           key={post.id}
         >

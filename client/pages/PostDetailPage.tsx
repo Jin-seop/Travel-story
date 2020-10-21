@@ -56,7 +56,7 @@ const PostDetailPage = () => {
       id: contentId
     })
       .then(res => {
-        alert("글이 정상적으로 삭제되었습니다");
+        alert("글이 정상적으로 삭제되었습니다.");
         router.push("/");
       })
       .catch(err => { console.log(err) })
