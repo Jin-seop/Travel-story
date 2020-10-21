@@ -12,6 +12,7 @@ import {
     createQueryBuilder,
 } from 'typeorm';
 import { User, Content, Image, Tag } from './entity';
+import { Console } from 'console';
 const secret = require('./config/jwt.json');
 const password = require('./config/google.json');
 
@@ -217,6 +218,16 @@ createConnection()
 
                     }
                 );
+                //수정을 위한 상세 정보
+                this.app.post('/onePostDetail', async (req: express.Request, res: express.Response) => {
+                    await getRepository(Content.Content)
+                        .createQueryBuilder('content')
+                        .whereInIds(req.body.id)
+                        .leftJoinAndSelect('content.images', 'image')
+                        .leftJoinAndSelect('content.tags', 'tag')
+                        .getOne()
+                        .then(result => res.status(200).send(result))
+                })
 
                 // 회원가입(암호화)
                 this.app.post(
@@ -341,8 +352,8 @@ createConnection()
                 this.app.put('/editUser', async (req: express.Request, res: express.Response) => {
                     const { token, email, password } = req.body
                     const user = await getRepository(User.User).findOne(
-                        {email}
-                        )
+                        { email }
+                    )
                     if (user) {
                         createQueryBuilder()
                             .update(User.User)
@@ -385,8 +396,8 @@ createConnection()
                             .leftJoinAndSelect('content.user', 'user')
                             .leftJoinAndSelect('content.images', 'image')
                             .leftJoinAndSelect('content.tags', 'tag')
-                            .where('user.username = :username',{ username })
-                            .orderBy('created_at','DESC')
+                            .where('user.username = :username', { username })
+                            .orderBy('created_at', 'DESC')
                             .getMany()
                             .then((result) => res.status(200).send(result))
                             .catch((err) => console.log(err));
