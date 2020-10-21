@@ -178,25 +178,15 @@ createConnection()
                 this.app.post(
                     '/postDelete',
                     async (req: express.Request, res: express.Response) => {
-                        const user = await getRepository(User.User).find({
-                            username: req.body.username,
-                        });
                         const deleteContent = await getConnection()
                             .createQueryBuilder()
                             .delete()
                             .from(Content.Content)
                             .where(
-                                `content.created_at = '${req.body.created_at}' and content.title = '${req.body.title}' `,
-                                { user }
+                                "id = :id", { id: req.body.id }
                             )
-                            .execute()
-                            .then((result) =>
-                                res.sendStatus(200)
-                            )
-                            .catch((err) => {
-                                console.log(err);
-                                res.sendStatus(404);
-                            });
+                            .execute().then(result => console.log(result))
+                            .catch(err => console.error(err))
                     }
                 );
 
