@@ -10,29 +10,32 @@ const EditContent = () => {
   const [newTags, setNewTags] = useState([]);
   const [token, setToken] = useState("")
   const [img, setImg] = useState("");
-  const username = useSelector((state) => {
-    return state.userName
-  });
+  const [oriTitle, setOriTitle] = useState("")
+  const [oriTags, setOriTags] = useState(null)
   const router = useRouter();
-  const [data, setData] = useState([])
-  const [isLogin, setIsLogin] = useState('')
+  const [isLogin, setIsLogin] = useState('');
   const storeLogin = useSelector((state) => state.isLogin);
-  console.log(storeLogin);
-  console.log(data);
+  const contentId = window.location.href.slice(38);
+  const username = useSelector((stat) => stat.userName);
 
-  const newPostHandler = () => {
-    Axios.get('http://localhost:4000/NewPost')
+  //해당 글 가져오기
+  const onePostDetailHandle = () => {
+    Axios.post('http://localhost:4000/onePostDetail', {
+      id: contentId
+    })
       .then(res => {
-        setData(res.data);
+        setOriTags(res.data.tags);
+        setOriTitle(res.data.title)
         setIsLogin(storeLogin);
+        setToken(localStorage.getItem('token'));
       })
       .catch(err => {console.log(err)});
   }
 
-  //태그 추가
   const handleTitle = (e) => {
     setTitle(e.target.value);
   }
+  //태그 추가
   const handleNewTag = (e) => {
     setNewTag(e.target.value);
     e.target.value = "";
@@ -53,17 +56,16 @@ const EditContent = () => {
     setNewTags(newTags.filter((x, i) => index !== i));
   };
 
-  //새로운 글 작성
-  const postContent = () => {
-    Axios.post("http://localhost:4000/addPost", {
+  //게시글 수정
+  const editContent = () => {
+    Axios.put("http://localhost:4000/post", {
       token: token,
-      username: username,
+      username:  username,
       title: title,
-      tagName: newTags,
-      imgName: img
+      tag: newTags,
     })
       .then(res => {
-        alert('글 작성이 완료되었습니다')
+        alert('글 수정이 완료되었습니다')
         router.push('/');
       })
       .catch(err => console.log(err))
@@ -73,10 +75,7 @@ const EditContent = () => {
     setImg(e.target.files[0]);
   }
 
-  useEffect(newPostHandler, [])
-  useEffect(() => {
-    setToken(localStorage.getItem('token'))
-  }, [])
+  useEffect(onePostDetailHandle, [])
 
   return (
     <div className={style.postDetilBodyContainer}>
@@ -88,8 +87,9 @@ const EditContent = () => {
       <input type="file" onChange={handleImg}></input>
       <form>
         <input
-          placeholder="제목을 입력해주세요"
+          placeholder="수정할 제목을 입력해주세요"
           type="text"
+          defaultValue={oriTitle}
           onChange={handleTitle} />
         <input
           placeholder="태그 입력 후 'Enter'를 쳐주세요"
@@ -110,7 +110,7 @@ const EditContent = () => {
           )
         )}
       </ul>
-      <button onClick={postContent}>글 수정하기</button>
+      <button onClick={editContent}>글 수정하기</button>
     </div>
   );
 };

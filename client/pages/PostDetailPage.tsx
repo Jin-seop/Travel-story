@@ -13,7 +13,7 @@ const PostDetailPage = () => {
   const [image, setImage] = useState<Object>()
   const [title, setTitle] = useState<String>('')
   const [tag, setTag] = useState<Object>()
-  const [created, setCreated] = useState<String>('');
+  // const [created, setCreated] = useState<String>('');
   const [contentId, setContentId] = useState<String>('');
   const username = useSelector((state) => state.userName);
 
@@ -28,7 +28,7 @@ const PostDetailPage = () => {
         setTitle(res.data.contents[0].title);
         setImage(res.data.contents[0].images);
         setTag(res.data.contents[0].tags);
-        setCreated(`${res.data.contents[0].created_at.substring(0, 10)} ${res.data.contents[0].created_at.substring(11, 19)}`);
+        // setCreated(`${res.data.contents[0].created_at.substring(0, 10)}${res.data.contents[0].created_at.substring(11, 19)}`);
       }
     })
   }
@@ -53,12 +53,10 @@ const PostDetailPage = () => {
   //게시글을 삭제하는 함수
   const deleteContent = () => {
     Axios.post("http://localhost:4000/postDelete", {
-      username: username,
-      created_at: created,
-      title: title
+      id: contentId
     })
       .then(res => {
-        console.log(res)
+        alert("글이 정상적으로 삭제되었습니다");
         router.push("/");
       })
       .catch(err => { console.log(err) })
@@ -95,7 +93,7 @@ const PostDetailPage = () => {
                   }}
                 >
                   수정하기
-          </a>
+               </a>
                 <a
                   onClick={deleteContent}
                 >
