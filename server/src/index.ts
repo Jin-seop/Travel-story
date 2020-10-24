@@ -387,9 +387,10 @@ createConnection()
                 const io = socketIO(server);
                 io.on('connection', socket => {
                     socket.on('send message', (item) => {
-                        const msg = item.name + ' : ' + item.message;
+                        const msg = item.name + ' : ' + item.message + ' : ' + item.date
+                        // 채팅 내용 DB에 저장할 것!
                         console.log(msg);
-                        io.emit('receive message', { name: item.name, message: item.message });
+                        io.emit('chat message', { name: item.name, message: item.message });
                     });
                     socket.on('disconnect', function () {
                         console.log('user disconnected: ', socket.id);

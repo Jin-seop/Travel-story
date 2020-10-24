@@ -9,12 +9,14 @@ import socketIOClient from 'socket.io-client'
 
 const PostDetailPage = () => {
   const router = useRouter();
-  const [userName, setUserName] = useState<String>('')
-  const [image, setImage] = useState<Object>()
-  const [title, setTitle] = useState<String>('')
-  const [tag, setTag] = useState<Object>()
-  // const [created, setCreated] = useState<String>('');
-  const [contentId, setContentId] = useState<String>('');
+  const [userName, setUserName] = useState<string>('')
+  const [image, setImage] = useState<object>()
+  const [title, setTitle] = useState<string>('')
+  const [tag, setTag] = useState<object>()
+  // const [created, setCreated] = useState<string>('');
+  const [contentId, setContentId] = useState<string>('');
+  const [chatMessage, setChatMeassage] = useState<string>('')
+  const [chatList, setChatList] = useState()
   const username = useSelector((state) => state.userName);
 
   // 게시글 상세 정보를 불러오는 함수
@@ -69,7 +71,11 @@ const PostDetailPage = () => {
 
   const chatHandler = () => {
     const socket = socketIOClient('localhost:5000');
-    socket.emit('send message', { name: 'user', message: '대화' });
+    socket.emit('send message', { name: userName, message: chatMessage, date: new Date().toUTCString() });
+    socket.on('chat message', (msg) => {
+      setChatList(msg)
+    })
+    setChatMeassage('')
   }
 
   useEffect(() => postHandler(), []);
@@ -121,9 +127,16 @@ const PostDetailPage = () => {
         </div>
 
         <div className={style.chatContainer}>
-          <div className={style.chatArea} />
+          <div className={style.chatArea} >
+            <ul>
+              {chatList ? <li>{chatList.name}: {chatList.message}</li> : null}
+            </ul>
+          </div>
           <form className={style.inputArea}>
-            <input placeholder="대화를 입력해주세요" />
+            <input placeholder="대화를 입력해주세요" value={chatMessage} onChange={(e) => {
+              e.preventDefault()
+              setChatMeassage(e.target.value)
+            }} />
             <button onClick={e => {
               e.preventDefault()
               chatHandler()

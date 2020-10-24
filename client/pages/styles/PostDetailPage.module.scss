@@ -82,6 +82,13 @@
   height: 90%;
   padding: 1rem 0 0 1rem;
   border-radius: 5px;
+  position: relative;
+    ul{
+      position: absolute;
+      li {
+        list-style: none;
+      }
+    }
 }
 
 .inputArea {
